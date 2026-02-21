@@ -1,10 +1,19 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Button, View } from 'react-native';
+import OrderService from '../services/OrderService';
+import { useCartStore } from '../context/CartContext';
 
-export default function ScreenName() {
+export default function CheckoutScreen({ navigation }) {
+  const { cartItems } = useCartStore();
+
+  const handleCheckout = () => {
+    const order = OrderService.createOrder(cartItems);
+    navigation.navigate('OrderSuccess', { order });
+  };
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Checkout Screen</Text>
+    <View style={{ padding: 20 }}>
+      <Button title="Place Order" onPress={handleCheckout} />
     </View>
   );
 }

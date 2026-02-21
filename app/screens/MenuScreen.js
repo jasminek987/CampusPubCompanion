@@ -9,7 +9,8 @@ export default function MenuScreen({ navigation }) {
     const data = DataService.getMenu();
     setMenu(data);
   }, []);
-
+ 
+  console.log('Menu data:', menu);
   return (
     <View style={{ flex: 1, padding: 16 }}>
       <FlatList
