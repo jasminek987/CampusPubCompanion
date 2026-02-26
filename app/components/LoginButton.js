@@ -15,7 +15,7 @@ export default function LoginButton({ onPress }) {
 const styles = StyleSheet.create({
     button: {
         marginTop: 20,
-        backgroundColor: '#006400',
+        backgroundColor: '#3b1713',
         padding: 15,
         borderRadius: 8,
         alignItems: 'center',
