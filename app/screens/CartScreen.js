@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useCartStore } from '../context/CartContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 export default function CartScreen({ navigation }) {
   const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCartStore();
+  const insets = useSafeAreaInsets();
 
   // ✅ Safe numeric conversion (prevents blank screen crashes)
   const total = cartItems.reduce((sum, row) => {
@@ -70,7 +73,7 @@ export default function CartScreen({ navigation }) {
           <Text style={styles.emptyText}>Your cart is empty.</Text>
           <TouchableOpacity
             style={styles.primaryBtn}
-            onPress={() => navigation.navigate('MainTabs', { screen: 'Menu' })}
+            onPress={() => navigation.navigate('Menu')}
             activeOpacity={0.85}
           >
             <Text style={styles.primaryBtnText}>Browse Menu</Text>
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
   },
 
   listContent: {
-    paddingBottom: 150, 
+    paddingBottom: 150, // space for bottom bar
   },
 
   card: {
@@ -263,12 +266,12 @@ const styles = StyleSheet.create({
   },
 
   primaryBtn: {
-    flex: 1,
-    width: '100%',
+    width: '20%',
     backgroundColor: '#3b1713',
     paddingVertical: 14,
     borderRadius: 14,
     alignItems: 'center',
+
   },
 
   primaryBtnText: {
@@ -285,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E5E5EA',
-    marginRight: 10, 
+    marginRight: 10, // spacing between buttons
   },
 
   secondaryBtnText: {
@@ -297,7 +300,7 @@ const styles = StyleSheet.create({
   emptyBox: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingHorizontal: 20,
   },
 
