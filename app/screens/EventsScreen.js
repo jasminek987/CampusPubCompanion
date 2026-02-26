@@ -24,7 +24,6 @@ export default function EventsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
-      {/* Header */}
       <View style={{ paddingTop: 18, paddingBottom: 12, paddingHorizontal: 16 }}>
         <View style={{ alignItems: 'center' }}>
           <Image
@@ -56,7 +55,6 @@ export default function EventsScreen() {
         </View>
       </View>
 
-      {/* Scrollable cards */}
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}>
         {events.map((e) => {
           const isOpen = openId === e.id;
