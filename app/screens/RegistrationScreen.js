@@ -6,12 +6,11 @@ import {
   StyleSheet,
   Alert,
   ScrollView,
+  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
 
@@ -28,50 +27,49 @@ export default function RegistrationScreen() {
   const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
 
   const handleSubmit = () => {
-    if (
-      !firstNameInput.trim() ||
-      !lastNameInput.trim() ||
-      !usernameInput.trim() ||
-      !mobileNumberInput.trim() ||
-      !emailInput.trim() ||
-      password.length < 6 ||
-      password !== confirmPasswordInput
-    ) {
-      Alert.alert(
-        'Error',
-        'Please fill in all fields and ensure passwords match (min 6 characters)'
-      );
-      return;
-    }
+    if (!firstNameInput.trim()) return Alert.alert('Error', 'First name is empty');
+    if (!lastNameInput.trim()) return Alert.alert('Error', 'Last name is empty');
+    if (!usernameInput.trim()) return Alert.alert('Error', 'Username is empty');
+    if (!mobileNumberInput.trim()) return Alert.alert('Error', 'Mobile number is empty');
+    if (!emailInput.trim()) return Alert.alert('Error', 'Email is empty');
+    if (password.length < 6) return Alert.alert('Error', 'Password must be at least 6 characters');
+    if (password !== confirmPasswordInput) return Alert.alert('Error', 'Passwords do not match');
 
-    Alert.alert('Success', 'Account created successfully', [
-      {
-        text: 'OK',
-        onPress: () => {
-          setEmail(emailInput.trim());
+    // Save email for other screens
+    setEmail(emailInput.trim());
 
-          setFirstNameInput('');
-          setLastNameInput('');
-          setUsernameInput('');
-          setMobileNumberInput('');
-          setEmailInput('');
-          setPassword('');
-          setConfirmPasswordInput('');
+    // Clear inputs
+    setFirstNameInput('');
+    setLastNameInput('');
+    setUsernameInput('');
+    setMobileNumberInput('');
+    setEmailInput('');
+    setPassword('');
+    setConfirmPasswordInput('');
 
-          navigation.navigate('Login');
-        },
-      },
-    ]);
+    // Navigate reliably (don’t depend on Alert button callback)
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
+    });
+
+    // Optional confirmation message (no callback)
+    Alert.alert('Success', 'Account created successfully');
   };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Registration</Text>
+    <SafeAreaView style={styles.container}>
+      
+      <Text style={styles.title}>Registration</Text>
 
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <ScrollView
           contentContainerStyle={{ paddingBottom: 30 }}
           keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}
         >
           <Text style={styles.label}>First Name</Text>
           <TextInput
@@ -95,6 +93,7 @@ export default function RegistrationScreen() {
             placeholder="Enter your username"
             value={usernameInput}
             onChangeText={setUsernameInput}
+            autoCapitalize="none"
           />
 
           <Text style={styles.label}>Mobile Number</Text>
@@ -136,11 +135,12 @@ export default function RegistrationScreen() {
 
           <CreateAccountButton onPress={handleSubmit} />
 
-      
-    
+          <Text style={styles.copyright}>
+            © {new Date().getFullYear()} UNBC. All rights reserved.
+          </Text>
         </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
