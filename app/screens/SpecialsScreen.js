@@ -18,13 +18,11 @@ export default function SpecialsScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
       <View style={styles.container}>
-        {/* Header */}
         <View style={{ paddingTop: 18, paddingBottom: 12, paddingHorizontal: 16 }}>
           <View style={{ alignItems: 'center' }}>
             <Image
@@ -62,7 +60,6 @@ export default function SpecialsScreen() {
           </View>
         </View>
 
-        {/* List */}
         {specials.length ? (
           <FlatList
             data={specials}
@@ -136,6 +133,14 @@ export default function SpecialsScreen() {
 }
 
 const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   backButton: {
     paddingHorizontal: 16,
     paddingTop: 8,
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 16,
-    color: '#000811',
+    color: '#007AFF',
     fontWeight: '600',
   },
 });
