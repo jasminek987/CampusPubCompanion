@@ -14,7 +14,6 @@ import FavoritesScreen from '../screens/FavoritesScreen';
 import InfoScreen from '../screens/InfoScreen';
 import LoginForm from '../screens/LoginScreen';
 import OrderSuccessScreen from '../screens/OrderSuccessScreen';
-import RegistrationScreen from '../screens/RegistrationScreen';
 import SpecialsScreen from '../screens/SpecialsScreen';
 import ItemDetailScreen from '../screens/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen';
@@ -77,7 +76,6 @@ export default function App() {
         <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }} >
         <Stack.Screen name="Login" component={LoginForm} />
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
         <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
         <Stack.Screen name="Cart" component={CartScreen} />
         <Stack.Screen name="Checkout" component={CheckoutScreen} />

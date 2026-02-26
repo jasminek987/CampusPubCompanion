@@ -13,7 +13,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useEmailStore } from '../context/EmailContext';
 import LoginButton from '../components/LoginButton';
-import CreateAccountButton from '../components/CreateAccountButton';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -98,14 +97,6 @@ export default function LoginScreen() {
 
         {/* Login Button */}
         <LoginButton onPress={handleLogin} disabled={!canSubmit} />
-
-        {/* Create Account */}
-        <Text style={styles.label}>Don't have an account?</Text>
-        <CreateAccountButton
-          onPress={() => navigation.navigate('Registration')}
-        />
-
-    
 
       </SafeAreaView>
     </SafeAreaProvider>
