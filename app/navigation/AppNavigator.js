@@ -87,6 +87,10 @@ export default function App() {
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
         <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
         <Stack.Screen name="Specials" component={SpecialsScreen} />
+        <Stack.Screen name="Events" component={EventsScreen} />
+        <Stack.Screen name="Menu" component={MenuScreen} />
+        <Stack.Screen name="Favorites" component={FavoritesScreen} />
+        <Stack.Screen name="Info" component={InfoScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </EmailProvider>

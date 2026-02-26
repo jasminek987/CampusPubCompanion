@@ -7,95 +7,89 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const screenWidth = Dimensions.get('window').width;
+const { width, height } = Dimensions.get('window');
 
-// ✅ Direct working image URL (NOT Bing link)
 const HERO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/28b658de-028f-445f-823d-965837db06e0/IMG_8683.JPG?format=2500w';
 
 export default function HomeScreen({ navigation }) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
-      
-      {/* HERO SECTION */}
-      <ImageBackground
-        source={{ uri: HERO_URI }}
-        style={{ width: '100%', height: 320 }}
-        resizeMode="cover"
-      >
-        {/* Dark Overlay */}
-        <View style={styles.overlay} />
-
-        {/* Top Bar */}
-        <View style={styles.topBar}>
-          <Text style={styles.userText}>Hey, User</Text>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Cart')}
-            style={styles.cartButton}
-          >
-            <Text style={styles.cartText}>Cart</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Title Block (Right Side like website) */}
-        <View style={styles.titleBlock}>
-          <Text style={styles.mainTitle}>
-            The Thirsty Moose Pub
-          </Text>
-
-          <Text style={styles.subTitle}>
-            Come in and join us on your study break or for some evening entertainment.
-          </Text>
-        </View>
-      </ImageBackground>
-
-      {/* SPECIALS CARD SECTION */}
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F2' }} edges={['top']}>
+      {/* VERTICAL SCROLL (this is the missing part) */}
       <ScrollView
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        style={{ marginTop: 16 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + 120, // extra space for bottom tab bar
+        }}
       >
-        {/* Specials Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Specials Today</Text>
+        {/* HERO SECTION */}
+        <ImageBackground
+          source={{ uri: HERO_URI }}
+          style={{ width: '100%', height: Math.min(height * 0.38, 300) }}
+          resizeMode="cover"
+        >
+          <View style={styles.overlay} />
 
-          <Text style={styles.cardSub}>
-            Discounted deals pulled from the menu.
-          </Text>
+          {/* Top Bar */}
+          <View style={[styles.topBar, { top: insets.top + 8 }]}>
+            <Text style={styles.userText}>Hey, User</Text>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Specials')}
-            style={styles.primaryButton}
-          >
-            <Text style={styles.primaryButtonText}>
-              View Specials
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Cart')}
+              style={styles.cartButton}
+            >
+              <Text style={styles.cartText}>Cart</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Title Block */}
+          <View style={styles.titleBlock}>
+            <Text style={styles.mainTitle}>The Thirsty Moose Pub</Text>
+
+            <Text style={styles.subTitle}>
+              Come in and join us on your study break or for some evening entertainment.
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </ImageBackground>
 
-        {/* Info Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Pub Info</Text>
+        {/* SPECIALS CARD SECTION (HORIZONTAL ONLY) */}
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+          style={{ marginTop: 16 }}
+        >
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Specials Today</Text>
+            <Text style={styles.cardSub}>Discounted deals pulled from the menu.</Text>
 
-          <Text style={styles.cardSub}>
-            Hours, location, contact, and socials.
-          </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Specials')}
+              style={styles.primaryButton}
+            >
+              <Text style={styles.primaryButtonText}>View Specials</Text>
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Info')}
-            style={styles.primaryButton}
-          >
-            <Text style={styles.primaryButtonText}>
-              View Info
-            </Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Pub Info</Text>
+            <Text style={styles.cardSub}>Hours, location, contact, and socials.</Text>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Info')}
+              style={styles.primaryButton}
+            >
+              <Text style={styles.primaryButtonText}>View Info</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -111,7 +105,6 @@ const styles = {
 
   topBar: {
     position: 'absolute',
-    top: 20,
     left: 16,
     right: 16,
     flexDirection: 'row',
@@ -141,13 +134,13 @@ const styles = {
     position: 'absolute',
     right: 18,
     bottom: 28,
-    width: '70%',
+    width: width * 0.7,
     alignItems: 'flex-end',
   },
 
   mainTitle: {
     color: 'white',
-    fontSize: 44,
+    fontSize: Math.min(width * 0.09, 40), // cap so it doesn’t explode on big screens
     fontWeight: '900',
     textAlign: 'right',
   },
@@ -155,13 +148,13 @@ const styles = {
   subTitle: {
     marginTop: 8,
     color: 'rgba(255,255,255,0.9)',
-    fontSize: 16,
+    fontSize: Math.min(width * 0.04, 16),
     textAlign: 'right',
   },
 
   card: {
-    width: screenWidth - 32,
-    height: 240,
+    width: width - 32, // exact “one full page” width for pagingEnabled
+    height: Math.min(height * 0.28, 240),
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
     justifyContent: 'center',
