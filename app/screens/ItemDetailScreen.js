@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { useCartStore } from '../context/CartContext';
 
 export default function ItemDetailScreen({ route, navigation }) {
@@ -9,7 +9,7 @@ export default function ItemDetailScreen({ route, navigation }) {
   const { addToCart } = useCartStore();
 
 return (
-  <View>
+  <View style={styles.container}>
     <Text>{item.name}</Text>
     <Text>${item.price}</Text>
     <Text>{item.description}</Text>
@@ -26,3 +26,10 @@ return (
   </View>
 );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    }, 
+  });

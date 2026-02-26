@@ -77,6 +77,7 @@ function BottomTabNavigator() {
 export default function App() {
   return (
     <EmailProvider>
+      
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }} >
         <Stack.Screen name="Login" component={LoginForm} />

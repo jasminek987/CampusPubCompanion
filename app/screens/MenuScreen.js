@@ -20,7 +20,7 @@ export default function MenuScreen({ navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       {/* Header */}
-      <View style={{ paddingTop: 18, paddingBottom: 12, paddingHorizontal: 16 }}>
+      <View style={{ paddingTop: 28, paddingBottom: 12, paddingHorizontal: 16 }}>
         <View style={{ alignItems: 'center' }}>
           <Image
             source={{ uri: LOGO_URI }}
