@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
 
   listContent: {
-    paddingBottom: 150, // space for bottom bar
+    paddingBottom: 150, 
   },
 
   card: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10,
-    marginHorizontal: 10, // replaces gap
+    marginHorizontal: 10, 
   },
 
   qtyPillText: {
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E5E5EA',
-    marginRight: 10, // spacing between buttons
+    marginRight: 10, 
   },
 
   secondaryBtnText: {
