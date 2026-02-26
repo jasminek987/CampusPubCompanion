@@ -105,6 +105,8 @@ export default function LoginScreen() {
           onPress={() => navigation.navigate('Registration')}
         />
 
+    
+
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -115,8 +117,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    justifyContent: 'space-between',
-  },
+      },
+
 
   backButton: {
     marginBottom: 10,
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
 
   backText: {
     fontSize: 16,
-    color: '#007AFF',
+    color: '#000000',
     fontWeight: '600',
   },
 
