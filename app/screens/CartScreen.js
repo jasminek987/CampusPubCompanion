@@ -5,7 +5,7 @@ import { useCartStore } from '../context/CartContext';
 export default function CartScreen({ navigation }) {
   const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCartStore();
 
-  // ✅ Safe numeric conversion (prevents blank screen crashes)
+  
   const total = cartItems.reduce((sum, row) => {
     const price = Number(row?.item?.price) || 0;
     const qty = Number(row?.quantity) || 0;
