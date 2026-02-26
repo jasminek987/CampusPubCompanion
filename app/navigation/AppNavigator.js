@@ -70,31 +70,6 @@ function BottomTabNavigator() {
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="Info" component={InfoScreen} />
 
-      <Tab.Screen
-      name="ItemDetail"
-      component={ItemDetailScreen}
-      options={{ tabBarButton: () => null }}
-    />
-      <Tab.Screen
-        name="Cart"
-        component={CartScreen}
-        options={{ tabBarButton: () => null }}
-      />
-      <Tab.Screen
-      name="OrderSuccess"
-      component={OrderSuccessScreen}
-      options={{ tabBarButton: () => null }}
-     />
-      <Tab.Screen
-        name="Specials"
-        component={SpecialsScreen}
-        options={{ tabBarButton: () => null }}
-      />
-      <Tab.Screen
-        name="Checkout"
-        component={CheckoutScreen}
-        options={{ tabBarButton: () => null }}
-      />
     </Tab.Navigator>
   );
 }
