@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
   ScrollView,
+  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -59,7 +60,9 @@ export default function RegistrationScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      
+    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      <Text style={styles.backText}>← Back</Text>
+    </TouchableOpacity>
       <Text style={styles.title}>Registration</Text>
 
       <KeyboardAvoidingView
@@ -135,9 +138,6 @@ export default function RegistrationScreen() {
 
           <CreateAccountButton onPress={handleSubmit} />
 
-          <Text style={styles.copyright}>
-            © {new Date().getFullYear()} UNBC. All rights reserved.
-          </Text>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -149,6 +149,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+  },
+  backButton: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 6,
+  },
+  backText: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: '600',
   },
   title: {
     fontSize: 28,

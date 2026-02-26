@@ -18,7 +18,7 @@ export default function SpecialsScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Back button always visible */}
+      
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
@@ -136,14 +136,6 @@ export default function SpecialsScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
   backButton: {
     paddingHorizontal: 16,
     paddingTop: 8,
@@ -151,7 +143,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 16,
-    color: '#007AFF',
+    color: '#000811',
     fontWeight: '600',
   },
 });
