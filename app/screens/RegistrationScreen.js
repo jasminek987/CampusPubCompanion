@@ -5,14 +5,14 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  ScrollView
+  ScrollView,
 } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
-
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
@@ -20,50 +20,59 @@ export default function RegistrationScreen() {
 
   const [firstNameInput, setFirstNameInput] = useState('');
   const [lastNameInput, setLastNameInput] = useState('');
+  const [usernameInput, setUsernameInput] = useState('');
+  const [mobileNumberInput, setMobileNumberInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameInput, setUsernameInput] = useState('');
-    const [mobileNumberInput, setMobileNumberInput] = useState('');
-    const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
 
   const handleSubmit = () => {
-    if (!firstNameInput || !lastNameInput || !emailInput || !password || password.length < 5 ||
-         !mobileNumberInput || password !== confirmPasswordInput) {
-      Alert.alert('Error', 'Please fill in all fields and ensure passwords match');
+    if (
+      !firstNameInput.trim() ||
+      !lastNameInput.trim() ||
+      !usernameInput.trim() ||
+      !mobileNumberInput.trim() ||
+      !emailInput.trim() ||
+      password.length < 6 ||
+      password !== confirmPasswordInput
+    ) {
+      Alert.alert(
+        'Error',
+        'Please fill in all fields and ensure passwords match (min 6 characters)'
+      );
       return;
     }
 
-   Alert.alert('Success', 'Account created successfully', [
-  {
-    text: 'OK',
-    onPress: () => {
-      setEmail(emailInput);
+    Alert.alert('Success', 'Account created successfully', [
+      {
+        text: 'OK',
+        onPress: () => {
+          setEmail(emailInput.trim());
 
-      // Reset form
-      setFirstNameInput('');
-      setLastNameInput('');
-      setUsernameInput('');
-      setMobileNumberInput('');
-      setEmailInput('');
-      setPassword('');
-      setConfirmPasswordInput('');
+          setFirstNameInput('');
+          setLastNameInput('');
+          setUsernameInput('');
+          setMobileNumberInput('');
+          setEmailInput('');
+          setPassword('');
+          setConfirmPasswordInput('');
 
-      navigation.navigate('Login');
-    },
-  },
-]);
-
-
- };
+          navigation.navigate('Login');
+        },
+      },
+    ]);
+  };
 
   return (
-   
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Header title="Registration" />
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View>
-          <Text style={styles.label}>Firstname</Text>
+        <Text style={styles.title}>Registration</Text>
+
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 30 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={styles.label}>First Name</Text>
           <TextInput
             style={styles.input}
             placeholder="Enter your first name"
@@ -71,7 +80,7 @@ export default function RegistrationScreen() {
             onChangeText={setFirstNameInput}
           />
 
-          <Text style={styles.label}>Lastname</Text>
+          <Text style={styles.label}>Last Name</Text>
           <TextInput
             style={styles.input}
             placeholder="Enter your last name"
@@ -87,14 +96,15 @@ export default function RegistrationScreen() {
             onChangeText={setUsernameInput}
           />
 
-        <Text style={styles.label}>Mobile Number</Text>
+          <Text style={styles.label}>Mobile Number</Text>
           <TextInput
             style={styles.input}
             placeholder="Enter your mobile number"
-            keyboardType="numeric"
+            keyboardType="phone-pad"
             value={mobileNumberInput}
             onChangeText={setMobileNumberInput}
           />
+
           <Text style={styles.label}>Email</Text>
           <TextInput
             style={styles.input}
@@ -122,20 +132,16 @@ export default function RegistrationScreen() {
             value={confirmPasswordInput}
             onChangeText={setConfirmPasswordInput}
           />
-        </View>
 
-        <View>
           <CreateAccountButton onPress={handleSubmit} />
+
           <Text style={styles.copyright}>
             © {new Date().getFullYear()} UNBC. All rights reserved.
           </Text>
-        </View>
-         </ScrollView>
+        </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
-   
   );
-  
 }
 
 const styles = StyleSheet.create({
@@ -143,7 +149,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 15,
   },
   label: {
     fontSize: 16,
@@ -164,7 +175,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#666',
     fontSize: 12,
-    paddingTop: 20,
+    marginTop: 20,
   },
 });
-
