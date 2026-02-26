@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E5E5EA',
-    marginRight: 10, // spacing between buttons
+    marginRight: 10, 
   },
 
   secondaryBtnText: {

@@ -7,7 +7,7 @@ const LOGO_URI =
 
 export default function MenuScreen({ navigation }) {
   const [sections, setSections] = useState([]);
-
+  
   useEffect(() => {
     const data = DataService.getMenu(); // [{category, items}]
     const formatted = data.map((cat) => ({
