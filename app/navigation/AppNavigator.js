@@ -19,14 +19,10 @@ import SpecialsScreen from '../screens/SpecialsScreen';
 import ItemDetailScreen from '../screens/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
-console.log("App starting...");
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-
- 
 function BottomTabNavigator() {
   const iconMap = {
     Home: ['home', 'home-outline'],
@@ -37,17 +33,18 @@ function BottomTabNavigator() {
   };
 
   return (
-    <Tab.Navigator
-     screenOptions={({ route }) => ({
+  <Tab.Navigator
+  screenOptions={({ route }) => ({
   tabBarIcon: ({ focused, size, color }) => (
-    <Ionicons
-      name={
-        iconMap[route.name]?.[focused ? 0 : 1] || 'help-outline'
-      }
-      size={size}
-      color={color}
-    />
+  <Ionicons
+    name={
+    iconMap[route.name]?.[focused ? 0 : 1] || 'help-outline'
+    }
+    size={size}
+    color={color}
+  />
   ),
+
   headerShown: false,
 
   tabBarStyle: {
@@ -61,7 +58,7 @@ function BottomTabNavigator() {
     flex: 1,
     paddingVertical: 4,
   },
-})}
+ })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Events" component={EventsScreen} />
