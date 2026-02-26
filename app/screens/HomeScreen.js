@@ -7,62 +7,53 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const screenWidth = Dimensions.get('window').width;
 
-// ✅ Direct working image URL (NOT Bing link)
 const HERO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/28b658de-028f-445f-823d-965837db06e0/IMG_8683.JPG?format=2500w';
 
 export default function HomeScreen({ navigation }) {
+  const insets = useSafeAreaInsets(); 
+
   return (
     <View style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
-      
-      {/* HERO SECTION */}
       <ImageBackground
         source={{ uri: HERO_URI }}
         style={{ width: '100%', height: 320 }}
         resizeMode="cover"
       >
-        {/* Dark Overlay */}
         <View style={styles.overlay} />
 
-        {/* Top Bar */}
-        <View style={styles.topBar}>
-  <Text style={styles.userText}>Hey, User</Text>
+        <View style={[styles.topBar, { top: insets.top + 8 }]}>
+          <Text style={styles.userText}>Hey, User</Text>
 
-  <View style={styles.rightButtons}>
-    
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Login')}
-      style={styles.cartButton}
-    >
-      <Text style={styles.cartText}>Login</Text>
-    </TouchableOpacity>
+          <View style={styles.rightButtons}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Login')}
+              style={styles.headerButton}
+            >
+              <Text style={styles.headerButtonText}>Login</Text>
+            </TouchableOpacity>
 
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Cart')}
-      style={styles.cartButton}
-    >
-      <Text style={styles.cartText}>Cart</Text>
-    </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Cart')}
+              style={styles.headerButton}
+            >
+              <Text style={styles.headerButtonText}>Cart</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
-  </View>
-</View>
-
-        {/* Title Block (Right Side like website) */}
         <View style={styles.titleBlock}>
-          <Text style={styles.mainTitle}>
-            The Thirsty Moose Pub
-          </Text>
-
+          <Text style={styles.mainTitle}>The Thirsty Moose Pub</Text>
           <Text style={styles.subTitle}>
             Come in and join us on your study break or for some evening entertainment.
           </Text>
         </View>
       </ImageBackground>
 
-      {/* SPECIALS CARD SECTION */}
       <ScrollView
         horizontal
         pagingEnabled
@@ -70,39 +61,27 @@ export default function HomeScreen({ navigation }) {
         contentContainerStyle={{ paddingHorizontal: 16 }}
         style={{ marginTop: 16 }}
       >
-        {/* Specials Card */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Specials Today</Text> 
-
-          <Text style={styles.cardSub}>
-            Discounted deals pulled from the menu.
-          </Text>
+          <Text style={styles.cardTitle}>Specials Today</Text>
+          <Text style={styles.cardSub}>Discounted deals pulled from the menu.</Text>
 
           <TouchableOpacity
             onPress={() => navigation.navigate('Specials')}
             style={styles.primaryButton}
           >
-            <Text style={styles.primaryButtonText}>
-              View Specials
-            </Text>
+            <Text style={styles.primaryButtonText}>View Specials</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Info Card */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Pub Info</Text>
-
-          <Text style={styles.cardSub}>
-            Hours, location, contact, and socials.
-          </Text>
+          <Text style={styles.cardSub}>Hours, location, contact, and socials.</Text>
 
           <TouchableOpacity
             onPress={() => navigation.navigate('Info')}
             style={styles.primaryButton}
           >
-            <Text style={styles.primaryButtonText}>
-              View Info
-            </Text>
+            <Text style={styles.primaryButtonText}>View Info</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

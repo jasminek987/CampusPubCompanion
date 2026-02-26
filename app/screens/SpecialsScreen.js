@@ -8,7 +8,7 @@ const LOGO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/1634057838043-H5MLXFNY8JSXZY8C1E2V/thirsty+moose+pub+logo.jpg?format=1500w';
 
 export default function SpecialsScreen() {
-  const navigation = useNavigation(); // ✅ you need this
+  const navigation = useNavigation(); 
   const [specials, setSpecials] = useState([]);
 
   useEffect(() => {
