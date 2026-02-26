@@ -105,10 +105,7 @@ export default function LoginScreen() {
           onPress={() => navigation.navigate('Registration')}
         />
 
-        {/* Footer */}
-        <Text style={styles.copyright}>
-          © {new Date().getFullYear()} UNBC. All rights reserved.
-        </Text>
+      
 
       </SafeAreaView>
     </SafeAreaProvider>
