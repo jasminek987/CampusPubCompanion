@@ -73,7 +73,7 @@ export default function CartScreen({ navigation }) {
           <Text style={styles.emptyText}>Your cart is empty.</Text>
           <TouchableOpacity
             style={styles.primaryBtn}
-            onPress={() => navigation.navigate('Menu')}
+            onPress={() => navigation.navigate('MainTabs', { screen: 'Menu' })}
             activeOpacity={0.85}
           >
             <Text style={styles.primaryBtnText}>Browse Menu</Text>
@@ -99,7 +99,7 @@ export default function CartScreen({ navigation }) {
             <View style={styles.bottomBtns}>
               <TouchableOpacity
                 style={styles.secondaryBtn}
-                onPress={() => navigation.navigate('Menu')}
+                onPress={() => navigation.navigate('MainTabs', { screen: 'Menu' })}
                 activeOpacity={0.85}
               >
                 <Text style={styles.secondaryBtnText}>Add Items</Text>

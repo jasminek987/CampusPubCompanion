@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
 
   homeButton: {
-    backgroundColor: '#5a1e14', // your dark maroon color
+    backgroundColor: '#5a1e14', 
     paddingVertical: 16,
     borderRadius: 30,
     alignItems: 'center',

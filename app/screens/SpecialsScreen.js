@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'white' },
 
   backButton: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 6 },
-  backText: { fontSize: 16, color: '#007AFF', fontWeight: '600' },
+  backText: { fontSize: 16, color: '#01070e', fontWeight: '600' },
 
   header: { paddingTop: 18, paddingBottom: 12, paddingHorizontal: 16 },
   headerCenter: { alignItems: 'center' },
