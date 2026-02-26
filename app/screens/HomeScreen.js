@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   View,
@@ -6,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ImageBackground,
+  StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -15,15 +17,11 @@ const HERO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/28b658de-028f-445f-823d-965837db06e0/IMG_8683.JPG?format=2500w';
 
 export default function HomeScreen({ navigation }) {
-  const insets = useSafeAreaInsets(); 
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
-      <ImageBackground
-        source={{ uri: HERO_URI }}
-        style={{ width: '100%', height: 320 }}
-        resizeMode="cover"
-      >
+    <View style={styles.container}>
+      <ImageBackground source={{ uri: HERO_URI }} style={styles.hero} resizeMode="cover">
         <View style={styles.overlay} />
 
         <View style={[styles.topBar, { top: insets.top + 8 }]}>
@@ -58,8 +56,8 @@ export default function HomeScreen({ navigation }) {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        style={{ marginTop: 16 }}
+        contentContainerStyle={styles.cardsContent}
+        style={styles.cardsWrap}
       >
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Specials Today</Text>
@@ -89,7 +87,11 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F2F2F2' },
+
+  hero: { width: '100%', height: 320 },
+
   overlay: {
     position: 'absolute',
     top: 0,
@@ -101,7 +103,6 @@ const styles = {
 
   topBar: {
     position: 'absolute',
-    top: 20,
     left: 16,
     right: 16,
     flexDirection: 'row',
@@ -109,23 +110,19 @@ const styles = {
     alignItems: 'center',
   },
 
-  userText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '700',
-  },
+  userText: { color: 'white', fontSize: 18, fontWeight: '700' },
 
-  cartButton: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
+  rightButtons: { flexDirection: 'row', alignItems: 'center' },
+
+  headerButton: {
+    backgroundColor: 'rgba(255,255,255,0.95)',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 999,
+    marginLeft: 10,
   },
 
-  cartText: {
-    color: '#000000',
-    fontWeight: '800',
-  },
+  headerButtonText: { color: '#000000', fontWeight: '800' },
 
   titleBlock: {
     position: 'absolute',
@@ -135,12 +132,7 @@ const styles = {
     alignItems: 'flex-end',
   },
 
-  mainTitle: {
-    color: 'white',
-    fontSize: 44,
-    fontWeight: '900',
-    textAlign: 'right',
-  },
+  mainTitle: { color: 'white', fontSize: 44, fontWeight: '900', textAlign: 'right' },
 
   subTitle: {
     marginTop: 8,
@@ -148,6 +140,9 @@ const styles = {
     fontSize: 16,
     textAlign: 'right',
   },
+
+  cardsWrap: { marginTop: 16 },
+  cardsContent: { paddingHorizontal: 16 },
 
   card: {
     width: screenWidth - 32,
@@ -165,17 +160,9 @@ const styles = {
     padding: 18,
   },
 
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#111',
-  },
+  cardTitle: { fontSize: 20, fontWeight: '800', color: '#111' },
 
-  cardSub: {
-    marginTop: 8,
-    color: '#666',
-    textAlign: 'center',
-  },
+  cardSub: { marginTop: 8, color: '#666', textAlign: 'center' },
 
   primaryButton: {
     marginTop: 16,
@@ -185,41 +172,5 @@ const styles = {
     borderRadius: 10,
   },
 
-  rightButtons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  } ,
-
-  headerButton: {
-  backgroundColor: 'rgba(255,255,255,0.95)',
-  paddingVertical: 8,
-  paddingHorizontal: 16,
-  borderRadius: 999,
-  marginLeft: 10,
-},
-
-headerButtonText: {
-  color: '#000000',
-  fontWeight: '800',
-},
-
-  LoginButton: {
-    backgroundColor: "rgba(255,255,255,0.9)",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 999,
-    marginRight: 10,
-    
-  },
-
-  loginText: {
-    color: '#000000',
-    fontWeight: '800',
-  },
-
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '700',
-  },
-};
+  primaryButtonText: { color: '#FFFFFF', fontWeight: '700' },
+});
