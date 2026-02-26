@@ -144,7 +144,7 @@ const styles = {
   },
 
   cartText: {
-    color: '#007AFF',
+    color: '#000000',
     fontWeight: '800',
   },
 
@@ -200,7 +200,7 @@ const styles = {
 
   primaryButton: {
     marginTop: 16,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#3b1713',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -221,7 +221,7 @@ const styles = {
 },
 
 headerButtonText: {
-  color: '#007AFF',
+  color: '#000000',
   fontWeight: '800',
 },
 
@@ -235,7 +235,7 @@ headerButtonText: {
   },
 
   loginText: {
-    color: '#007AFF',
+    color: '#000000',
     fontWeight: '800',
   },
 
