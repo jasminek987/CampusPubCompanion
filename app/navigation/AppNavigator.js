@@ -72,6 +72,7 @@ function BottomTabNavigator() {
 export default function App() {
   return (
     <EmailProvider>
+      <CartProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }} >
         <Stack.Screen name="Login" component={LoginForm} />
@@ -84,6 +85,7 @@ export default function App() {
         <Stack.Screen name="Specials" component={SpecialsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+      </CartProvider>
     </EmailProvider>
   );
 }
