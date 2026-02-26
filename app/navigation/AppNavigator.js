@@ -68,7 +68,6 @@ function BottomTabNavigator() {
       <Tab.Screen name="Menu" component={MenuScreen} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="Info" component={InfoScreen} />
-
     </Tab.Navigator>
   );
 }

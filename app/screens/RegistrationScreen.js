@@ -7,10 +7,8 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
 
@@ -57,7 +55,7 @@ export default function RegistrationScreen() {
           setPassword('');
           setConfirmPasswordInput('');
 
-          navigation.navigate('Login');
+          navigation.navigate('MainTabs', { screen: 'Home' });
         },
       },
     ]);
