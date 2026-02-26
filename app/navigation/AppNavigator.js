@@ -4,7 +4,6 @@ import { View, Text, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { EmailProvider } from '../context/EmailContext';
 import { CartProvider } from '../context/CartContext';
@@ -82,6 +81,11 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginForm} />
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
+        <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Checkout" component={CheckoutScreen} />
+        <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
+        <Stack.Screen name="Specials" component={SpecialsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </EmailProvider>
