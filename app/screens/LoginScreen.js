@@ -105,8 +105,6 @@ export default function LoginScreen() {
           onPress={() => navigation.navigate('Registration')}
         />
 
-      
-
       </SafeAreaView>
     </SafeAreaProvider>
   );
