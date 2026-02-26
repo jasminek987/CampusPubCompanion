@@ -29,15 +29,26 @@ export default function HomeScreen({ navigation }) {
 
         {/* Top Bar */}
         <View style={styles.topBar}>
-          <Text style={styles.userText}>Hey, User</Text>
+  <Text style={styles.userText}>Hey, User</Text>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Cart')}
-            style={styles.cartButton}
-          >
-            <Text style={styles.cartText}>Cart</Text>
-          </TouchableOpacity>
-        </View>
+  <View style={styles.rightButtons}>
+    
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Login')}
+      style={styles.cartButton}
+    >
+      <Text style={styles.cartText}>Login</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Cart')}
+      style={styles.cartButton}
+    >
+      <Text style={styles.cartText}>Cart</Text>
+    </TouchableOpacity>
+
+  </View>
+</View>
 
         {/* Title Block (Right Side like website) */}
         <View style={styles.titleBlock}>
@@ -61,7 +72,7 @@ export default function HomeScreen({ navigation }) {
       >
         {/* Specials Card */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Specials Today</Text>
+          <Text style={styles.cardTitle}>Specials Today</Text> 
 
           <Text style={styles.cardSub}>
             Discounted deals pulled from the menu.
@@ -193,6 +204,39 @@ const styles = {
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 10,
+  },
+
+  rightButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  } ,
+
+  headerButton: {
+  backgroundColor: 'rgba(255,255,255,0.95)',
+  paddingVertical: 8,
+  paddingHorizontal: 16,
+  borderRadius: 999,
+  marginLeft: 10,
+},
+
+headerButtonText: {
+  color: '#007AFF',
+  fontWeight: '800',
+},
+
+  LoginButton: {
+    backgroundColor: "rgba(255,255,255,0.9)",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    marginRight: 10,
+    
+  },
+
+  loginText: {
+    color: '#007AFF',
+    fontWeight: '800',
   },
 
   primaryButtonText: {
