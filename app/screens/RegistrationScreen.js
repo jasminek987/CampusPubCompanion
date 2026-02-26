@@ -135,9 +135,7 @@ export default function RegistrationScreen() {
 
           <CreateAccountButton onPress={handleSubmit} />
 
-          <Text style={styles.copyright}>
-            © {new Date().getFullYear()} UNBC. All rights reserved.
-          </Text>
+          
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
