@@ -1,10 +1,10 @@
-console.log("App starting...");
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { EmailProvider } from '../context/EmailContext';
 import { CartProvider } from '../context/CartContext';
@@ -20,6 +20,7 @@ import SpecialsScreen from '../screens/SpecialsScreen';
 import ItemDetailScreen from '../screens/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
+console.log("App starting...");
 
 
 const Tab = createBottomTabNavigator();
@@ -69,7 +70,31 @@ function BottomTabNavigator() {
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="Info" component={InfoScreen} />
 
-     
+      <Tab.Screen
+      name="ItemDetail"
+      component={ItemDetailScreen}
+      options={{ tabBarButton: () => null }}
+    />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{ tabBarButton: () => null }}
+      />
+      <Tab.Screen
+      name="OrderSuccess"
+      component={OrderSuccessScreen}
+      options={{ tabBarButton: () => null }}
+     />
+      <Tab.Screen
+        name="Specials"
+        component={SpecialsScreen}
+        options={{ tabBarButton: () => null }}
+      />
+      <Tab.Screen
+        name="Checkout"
+        component={CheckoutScreen}
+        options={{ tabBarButton: () => null }}
+      />
     </Tab.Navigator>
   );
 }
@@ -77,17 +102,11 @@ function BottomTabNavigator() {
 export default function App() {
   return (
     <EmailProvider>
-      
       <NavigationContainer>
         <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }} >
         <Stack.Screen name="Login" component={LoginForm} />
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
-        <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
-        <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
-        <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
-        <Stack.Screen name="Specials" component={SpecialsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </EmailProvider>
