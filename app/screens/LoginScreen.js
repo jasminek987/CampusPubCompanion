@@ -8,6 +8,12 @@ import LoginButton from '../components/LoginButton';
 import CreateAccountButton from '../components/CreateAccountButton';
 
 export default function LoginScreen() {
+  <TouchableOpacity
+  onPress={() => navigation.goBack()}
+  style={styles.backButton}
+>
+  <Text style={styles.backText}>← Back</Text>
+</TouchableOpacity>
   const navigation = useNavigation();
   const { setEmail } = useEmailStore();
 
@@ -116,6 +122,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     color: '#111',
   },
+
+  backButton: {
+  marginBottom: 10,
+},
+
+backText: {
+  fontSize: 16,
+  color: '#007AFF',
+  fontWeight: '600',
+},
   copyright: {
     textAlign: 'center',
     color: '#666',
