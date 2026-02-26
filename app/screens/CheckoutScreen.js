@@ -12,7 +12,7 @@ export default function CheckoutScreen({ navigation }) {
   };
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Button title="Place Order" onPress={handleCheckout} />
     </View>
   );

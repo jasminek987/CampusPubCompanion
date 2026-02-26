@@ -17,7 +17,7 @@ export default function OrderSuccessScreen({ route, navigation }) {
       </Text>
 
       <Text style={{ marginTop: 20, color: 'blue' }}
-      onPress={() => navigation.navigate('Home')} >
+        onPress={() => navigation.navigate('MainTabs', { screen: 'Home' })} >
       Back to Home
       </Text>
 

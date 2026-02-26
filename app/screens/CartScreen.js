@@ -77,7 +77,7 @@ export default function CartScreen({ navigation }) {
       <View style={{ marginTop: 10 }}>
   <Button
     title="Add More Items"
-    onPress={() => navigation.navigate('Menu')}
+    onPress={() => navigation.navigate('MainTabs', { screen: 'Menu' })}
   />
 </View>
       <View style={{ marginTop: 12 }}>
