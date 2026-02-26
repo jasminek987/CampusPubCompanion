@@ -1,5 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,12 +16,6 @@ import LoginButton from '../components/LoginButton';
 import CreateAccountButton from '../components/CreateAccountButton';
 
 export default function LoginScreen() {
-  <TouchableOpacity
-  onPress={() => navigation.goBack()}
-  style={styles.backButton}
->
-  <Text style={styles.backText}>← Back</Text>
-</TouchableOpacity>
   const navigation = useNavigation();
   const { setEmail } = useEmailStore();
 
@@ -33,7 +35,10 @@ export default function LoginScreen() {
     }
 
     if (password.length < 6) {
-      Alert.alert('Weak Password', 'Password must be at least 6 characters.');
+      Alert.alert(
+        'Weak Password',
+        'Password must be at least 6 characters.'
+      );
       return false;
     }
 
@@ -46,6 +51,7 @@ export default function LoginScreen() {
     setEmail(email.trim());
     Alert.alert('Welcome!', 'You are signed in now.');
 
+    // Go back to main app (tabs)
     navigation.replace('MainTabs');
 
     setEmailInput('');
@@ -55,10 +61,21 @@ export default function LoginScreen() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
+        
+        {/* Back Button */}
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Text style={styles.backText}>← Back</Text>
+        </TouchableOpacity>
+
+        {/* Title */}
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Login</Text>
         </View>
 
+        {/* Email */}
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
@@ -69,6 +86,7 @@ export default function LoginScreen() {
           onChangeText={setEmailInput}
         />
 
+        {/* Password */}
         <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
@@ -78,14 +96,20 @@ export default function LoginScreen() {
           onChangeText={setPassword}
         />
 
+        {/* Login Button */}
         <LoginButton onPress={handleLogin} disabled={!canSubmit} />
 
+        {/* Create Account */}
         <Text style={styles.label}>Don't have an account?</Text>
-        <CreateAccountButton onPress={() => navigation.navigate('Registration')} />
+        <CreateAccountButton
+          onPress={() => navigation.navigate('Registration')}
+        />
 
+        {/* Footer */}
         <Text style={styles.copyright}>
           © {new Date().getFullYear()} UNBC. All rights reserved.
         </Text>
+
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -98,20 +122,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'space-between',
   },
+
+  backButton: {
+    marginBottom: 10,
+  },
+
+  backText: {
+    fontSize: 16,
+    color: '#007AFF',
+    fontWeight: '600',
+  },
+
   titleContainer: {
     alignItems: 'center',
     marginBottom: 20,
   },
+
   title: {
     fontSize: 28,
     fontWeight: 'bold',
   },
+
   label: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 8,
     marginTop: 15,
   },
+
   input: {
     height: 50,
     borderWidth: 1,
@@ -123,15 +161,6 @@ const styles = StyleSheet.create({
     color: '#111',
   },
 
-  backButton: {
-  marginBottom: 10,
-},
-
-backText: {
-  fontSize: 16,
-  color: '#007AFF',
-  fontWeight: '600',
-},
   copyright: {
     textAlign: 'center',
     color: '#666',
