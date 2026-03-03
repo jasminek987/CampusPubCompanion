@@ -149,10 +149,4 @@ const styles = StyleSheet.create({
     color: '#111',
   },
 
-  copyright: {
-    textAlign: 'center',
-    color: '#666',
-    fontSize: 12,
-    paddingTop: 20,
-  },
 });
