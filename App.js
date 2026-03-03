@@ -8,10 +8,10 @@ export default function App() {
   return (
     <SafeAreaProvider>
     <EmailProvider>
-  <CartProvider>
-    <AppNavigator />
-  </CartProvider>
-</EmailProvider>
+    <CartProvider>
+    <AppNavigator/>
+    </CartProvider>
+    </EmailProvider>
     </SafeAreaProvider>
   );
 }

@@ -46,10 +46,10 @@ export default function MenuScreen({ navigation }) {
             <View style={styles.cardInner}>
               <View style={styles.rowTop}>
                 <Text style={styles.itemName} numberOfLines={1}>
-                  {item.name}
+                {item.name}
                 </Text>
                 <View style={styles.pricePill}>
-                  <Text style={styles.priceText}>${Number(item.price).toFixed(2)}</Text>
+                <Text style={styles.priceText}>${Number(item.price).toFixed(2)}</Text>
                 </View>
               </View>
 
