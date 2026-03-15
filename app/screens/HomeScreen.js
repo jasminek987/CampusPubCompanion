@@ -9,7 +9,6 @@ import {
   ImageBackground,
   StyleSheet,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -17,14 +16,13 @@ const HERO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/28b658de-028f-445f-823d-965837db06e0/IMG_8683.JPG?format=2500w';
 
 export default function HomeScreen({ navigation }) {
-  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.container}>
       <ImageBackground source={{ uri: HERO_URI }} style={styles.hero} resizeMode="cover">
         <View style={styles.overlay} />
 
-        <View style={[styles.topBar, { top: insets.top + 8 }]}>
+        <View style={[styles.topBar]}>
           <Text style={styles.userText}>Hey, User</Text>
 
           <View style={styles.rightButtons}>

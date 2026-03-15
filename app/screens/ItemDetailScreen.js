@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useCartStore } from '../context/CartContext';
 
 export default function ItemDetailScreen({ route, navigation }) {
   const { item } = route.params || {};
-  const { addToCart } = useCartStore();
+  const { addToCart, isFavorited, toggleFavorite } = useCartStore();
 
   if (!item) {
     return (
@@ -18,6 +19,7 @@ export default function ItemDetailScreen({ route, navigation }) {
   }
 
   const price = Number(item.price) || 0;
+  const favorited = isFavorited(item.id);
 
   return (
     <View style={styles.container}>
@@ -27,9 +29,21 @@ export default function ItemDetailScreen({ route, navigation }) {
           <Text style={styles.pillText}>← Back</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.pillBtn} activeOpacity={0.85}>
-          <Text style={styles.pillText}>Cart</Text>
-        </TouchableOpacity>
+        <View style={styles.topBarRight}>
+          {/* Heart Button */}
+          <TouchableOpacity onPress={() => toggleFavorite(item)} style={styles.pillBtn} activeOpacity={0.85}>
+            <Ionicons
+              name={favorited ? 'heart' : 'heart-outline'}
+              size={20}
+              color={favorited ? '#c0392b' : '#111'}
+            />
+          </TouchableOpacity>
+
+          {/* Cart Button */}
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.pillBtn} activeOpacity={0.85}>
+            <Text style={styles.pillText}>Cart</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -37,7 +51,6 @@ export default function ItemDetailScreen({ route, navigation }) {
         <View style={styles.card}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.price}>${price.toFixed(2)}</Text>
-
           {item.description ? (
             <Text style={styles.description}>{item.description}</Text>
           ) : (
@@ -76,14 +89,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     padding: 16,
   },
-
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
   },
-
+  topBarRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   pillBtn: {
     backgroundColor: 'rgba(255,255,255,0.95)',
     paddingVertical: 10,
@@ -92,16 +108,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E5EA',
   },
-
   pillText: {
     color: '#111',
     fontWeight: '900',
   },
-
   content: {
     paddingBottom: 30,
   },
-
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
@@ -109,27 +122,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E5EA',
   },
-
   name: {
     fontSize: 26,
     fontWeight: '900',
     color: '#111',
   },
-
   price: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '900',
     color: '#000000',
   },
-
   description: {
     marginTop: 12,
     fontSize: 15,
     lineHeight: 22,
     color: '#333',
   },
-
   descriptionMuted: {
     marginTop: 12,
     fontSize: 15,
@@ -137,7 +146,6 @@ const styles = StyleSheet.create({
     color: '#777',
     fontStyle: 'italic',
   },
-
   primaryBtn: {
     marginTop: 14,
     backgroundColor: '#3b1713',
@@ -145,13 +153,11 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
   },
-
   primaryBtnText: {
     color: '#fff',
     fontWeight: '900',
     fontSize: 16,
   },
-
   secondaryBtn: {
     marginTop: 10,
     backgroundColor: '#F7F7F8',
@@ -161,13 +167,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E5EA',
   },
-
   secondaryBtnText: {
     color: '#111',
     fontWeight: '900',
     fontSize: 16,
   },
-
   errorText: {
     fontSize: 18,
     fontWeight: '800',

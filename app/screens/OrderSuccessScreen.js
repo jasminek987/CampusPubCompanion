@@ -5,15 +5,17 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useCartStore } from '../context/CartContext';
+
 
 export default function OrderSuccessScreen({ route, navigation }) {
   const { order } = route.params;
-  const insets = useSafeAreaInsets();
+   const { clearCart } = useCartStore();
+ 
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + 20 }]}>
-      
+    <View style={[styles.container]}>
+    
       {/* Success Card */}
       <View style={styles.card}>
         
@@ -31,19 +33,18 @@ export default function OrderSuccessScreen({ route, navigation }) {
           Thank you for your order.  
           We’re preparing it now!
         </Text>
-
       </View>
 
       {/* Back Button */}
       <TouchableOpacity
         style={styles.homeButton}
-        onPress={() =>
-          navigation.navigate('MainTabs', { screen: 'Home' })
-        }
+        onPress={() => {
+          clearCart();
+          navigation.navigate('MainTabs', { screen: 'Home' });
+        }}
       >
-        <Text style={styles.homeButtonText}>Back to Home</Text>
+      <Text style={styles.homeButtonText}>Back to Home</Text>
       </TouchableOpacity>
-
     </View>
   );
 }

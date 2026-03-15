@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   primaryBtnText: {
     color: '#fff',
     fontWeight: '900',
-    fontSize: 16,
+    fontSize: 14,
   },
 
   secondaryBtn: {
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   secondaryBtnText: {
     color: '#111',
     fontWeight: '900',
-    fontSize: 16,
+    fontSize: 14,
   },
 
   emptyBox: {

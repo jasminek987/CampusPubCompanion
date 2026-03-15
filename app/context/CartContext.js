@@ -4,19 +4,17 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
+  // ---------- Cart ----------
   const addToCart = (item) => {
     setCartItems((prev) => {
       const existing = prev.find((p) => p.item.id === item.id);
-
       if (existing) {
         return prev.map((p) =>
-          p.item.id === item.id
-            ? { ...p, quantity: p.quantity + 1 }
-            : p
+          p.item.id === item.id ? { ...p, quantity: p.quantity + 1 } : p
         );
       }
-
       return [...prev, { item, quantity: 1 }];
     });
   };
@@ -43,6 +41,21 @@ export function CartProvider({ children }) {
     setCartItems((prev) => prev.filter((p) => p.item.id !== id));
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  // ---------- Favorites ----------
+  const isFavorited = (id) => favorites.some((fav) => fav.id === id);
+
+  const toggleFavorite = (item) => {
+    setFavorites((prev) =>
+      prev.some((fav) => fav.id === item.id)
+        ? prev.filter((fav) => fav.id !== item.id)
+        : [...prev, item]
+    );
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -51,6 +64,10 @@ export function CartProvider({ children }) {
         increaseQuantity,
         decreaseQuantity,
         removeFromCart,
+        clearCart,
+        favorites,
+        isFavorited,
+        toggleFavorite,
       }}
     >
       {children}

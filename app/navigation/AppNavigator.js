@@ -18,6 +18,7 @@ import SpecialsScreen from '../screens/SpecialsScreen';
 import ItemDetailScreen from '../screens/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -48,7 +49,7 @@ function BottomTabNavigator() {
 
   tabBarStyle: {
     height: 60,
-    paddingBottom: 5,
+    paddingBottom: 20,
     paddingTop: 5,
     marginBottom: 0,
   },
@@ -70,6 +71,7 @@ function BottomTabNavigator() {
 
 export default function App() {
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <EmailProvider>
       <CartProvider>
       <NavigationContainer>
@@ -85,5 +87,6 @@ export default function App() {
       </NavigationContainer>
       </CartProvider>
     </EmailProvider>
+    </SafeAreaView>
   );
 }
