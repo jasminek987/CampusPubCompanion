@@ -25,13 +25,13 @@ export default function ItemDetailScreen({ route, navigation }) {
     <View style={styles.container}>
       {/* Top Bar */}
       <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.pillBtn} activeOpacity={0.85}>
-          <Text style={styles.pillText}>← Back</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} activeOpacity={0.85}>
+          <Text style={styles.btnText}>← Back</Text>
         </TouchableOpacity>
 
         <View style={styles.topBarRight}>
           {/* Heart Button */}
-          <TouchableOpacity onPress={() => toggleFavorite(item)} style={styles.pillBtn} activeOpacity={0.85}>
+          <TouchableOpacity onPress={() => toggleFavorite(item)} style={styles.topBtn} activeOpacity={0.85}>
             <Ionicons
               name={favorited ? 'heart' : 'heart-outline'}
               size={20}
@@ -40,8 +40,8 @@ export default function ItemDetailScreen({ route, navigation }) {
           </TouchableOpacity>
 
           {/* Cart Button */}
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.pillBtn} activeOpacity={0.85}>
-            <Text style={styles.pillText}>Cart</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.topBtn} activeOpacity={0.85}>
+            <Text style={styles.btnText}>Cart</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  pillBtn: {
+  backButton: {
     backgroundColor: 'rgba(255,255,255,0.95)',
     paddingVertical: 10,
     paddingHorizontal: 14,
@@ -108,10 +108,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E5EA',
   },
-  pillText: {
+  
+  btnText: { 
     color: '#111',
     fontWeight: '900',
   },
+
+  topBtn: {
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+  },
+  
   content: {
     paddingBottom: 30,
   },
