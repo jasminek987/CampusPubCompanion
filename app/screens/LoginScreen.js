@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useEmailStore } from '../context/EmailContext';
 import LoginButton from '../components/LoginButton';
+import CreateAccountButton from '../components/CreateAccountButton';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -21,12 +22,15 @@ export default function LoginScreen() {
   const [email, setEmailInput] = useState('');
   const [password, setPassword] = useState('');
 
+  
+
   const canSubmit = useMemo(() => {
     return email.trim().length > 0 && password.length > 0;
   }, [email, password]);
 
   const validate = () => {
     const cleanEmail = email.trim();
+    
 
     if (!cleanEmail.includes('@') || !cleanEmail.includes('.')) {
       Alert.alert('Invalid Email', 'Please enter a valid email address.');
@@ -96,9 +100,15 @@ export default function LoginScreen() {
         />
 
         {/* Login Button */}
+      
         <LoginButton onPress={handleLogin} disabled={!canSubmit} />
 
+        {/* Create Account Button */}
+        <CreateAccountButton onPress={() => navigation.navigate('CreateAccount')} />
+
       </SafeAreaView>
+
+
     </SafeAreaProvider>
   );
 }
