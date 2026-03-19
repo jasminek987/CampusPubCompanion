@@ -7,15 +7,15 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-
+import { useAuth } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
 import { useEmailStore } from '../context/EmailContext';
 import LoginButton from '../components/LoginButton';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const { login } = useAuth();
   const { setEmail } = useEmailStore();
 
   const [email, setEmailInput] = useState('');
@@ -47,10 +47,10 @@ export default function LoginScreen() {
   const handleLogin = () => {
     if (!validate()) return;
 
-    setEmail(email.trim());
+   setEmail(email.trim());
+    login();
+    console.log('LOGIN: user is now logged in');
     Alert.alert('Welcome!', 'You are signed in now.');
-
-    // Go back to main app (tabs)
     navigation.replace('MainTabs');
 
     setEmailInput('');

@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import OrderService from '../services/OrderService';
 import { useCartStore } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+
 
 export default function CheckoutScreen({ navigation }) {
   const { cartItems } = useCartStore();
+   const { isLoggedIn } = useAuth(); 
+   console.log('CHECKOUT isLoggedIn =', isLoggedIn);
 
   const total = cartItems.reduce((sum, row) => {
     const price = Number(row?.item?.price) || 0;
@@ -13,6 +17,14 @@ export default function CheckoutScreen({ navigation }) {
   }, 0);
 
   const handleCheckout = () => {
+        if (!isLoggedIn) {
+      Alert.alert(
+        'Login required',
+        'Please log in or sign up before placing an order.'
+      );
+      navigation.navigate('Login');
+      return;
+    }
     const order = OrderService.createOrder(cartItems);
     navigation.navigate('OrderSuccess', { order });
   };
