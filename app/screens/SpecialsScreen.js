@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import DataService from '../services/DataService';
 
@@ -18,7 +17,7 @@ export default function SpecialsScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safe}>
+  <View>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
@@ -71,7 +70,7 @@ export default function SpecialsScreen() {
           />
         ) : null}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

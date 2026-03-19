@@ -37,10 +37,8 @@ if (!emailInput.trim()) return Alert.alert('Error', 'Email is empty');
 if (password.length < 6) return Alert.alert('Error', 'Password must be at least 6 characters');
 if (password !== confirmPasswordInput) return Alert.alert('Error', 'Passwords do not match');
 
-// Save email for other screens
 setEmail(emailInput.trim());
 
-// Clear inputs
 setFirstNameInput('');
 setLastNameInput('');
 setUsernameInput('');
@@ -49,13 +47,11 @@ setEmailInput('');
 setPassword('');
 setConfirmPasswordInput('');
 
-// Navigate reliably (don’t depend on Alert button callback)
 navigation.reset({
 index: 0,
 routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
 });
 
-// Optional confirmation message (no callback)
 Alert.alert('Success', 'Account created successfully');
 };
 
@@ -63,7 +59,7 @@ return (
 <SafeAreaView style={styles.container}>
 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
 <Text style={styles.backText}>← Back</Text>
-</TouchableOpacity>
+</TouchableOpacity> 
 <Text style={styles.title}>Registration</Text>
 
 <KeyboardAvoidingView
@@ -138,7 +134,6 @@ onChangeText={setConfirmPasswordInput}
 />
 
 <CreateAccountButton onPress={handleSubmit} />
-
 </ScrollView>
 </KeyboardAvoidingView>
 </SafeAreaView>

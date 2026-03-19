@@ -5,7 +5,7 @@ import DataService from '../services/DataService';
 const LOGO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/1634057838043-H5MLXFNY8JSXZY8C1E2V/thirsty+moose+pub+logo.jpg?format=1500w';
 
-export default function EventsScreen() {
+export default function EventsScreen({navigation }) {
   const [events, setEvents] = useState([]);
   const [openId, setOpenId] = useState(null);
 
@@ -24,7 +24,7 @@ export default function EventsScreen() {
 
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('MainTabs')} style={styles.backButton} activeOpacity={0.85}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} activeOpacity={0.85}>
             <Text style={styles.backText}>← Back</Text>
           </TouchableOpacity>
       <View style={styles.header}> 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
   },
 
-    backButton: {
+  backButton: {
     marginBottom: 10,
     marginTop: 10,
     marginLeft: 16,

@@ -8,7 +8,6 @@ export default function CartScreen({ navigation }) {
   const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCartStore();
   const insets = useSafeAreaInsets();
 
-  
   const total = cartItems.reduce((sum, row) => {
     const price = Number(row?.item?.price) || 0;
     const qty = Number(row?.quantity) || 0;
@@ -16,7 +15,7 @@ export default function CartScreen({ navigation }) {
   }, 0);
 
   const renderRow = ({ item: row }) => {
-    const price = Number(row?.item?.price) || 0;
+  const price = Number(row?.item?.price) || 0;
 
     return (
       <View style={styles.card}>

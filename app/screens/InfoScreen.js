@@ -77,7 +77,7 @@ export default function InfoScreen() {
         {/* Hours */}
         <SectionHeader title="Hours" />
         <Card>
-          {/* Fix: hours now use { day, status } — no more open/close mismatch */}
+         
           {PUB_INFO.hours.map(({ day, status }) => {
             const isToday = day === today;
             const isClosed = status === 'Closed';
@@ -146,7 +146,7 @@ export default function InfoScreen() {
 
         {/* Socials */}
         <SectionHeader title="Follow Us" />
-        {/* Fix: was destructuring { label } but PUB_INFO.socials uses { platform } */}
+       
         <View style={styles.socialsRow}>
           {PUB_INFO.socials.map(({ platform, url }) => (
             <TouchableOpacity

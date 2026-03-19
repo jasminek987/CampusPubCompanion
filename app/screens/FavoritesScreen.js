@@ -92,19 +92,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-  
-    backText: {
+  backText: {
     fontSize: 16,
     color: '#000000',
     fontWeight: '600',
   },
-
   Spacer: {
     paddingVertical: 10,
     paddingHorizontal: 14,
     opacity: 0,
   },
-
   screenTitle: {
     fontSize: 18,
     fontWeight: '900',

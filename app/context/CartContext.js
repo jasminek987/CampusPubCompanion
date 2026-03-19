@@ -45,7 +45,7 @@ export function CartProvider({ children }) {
     setCartItems([]);
   };
 
-  
+  // --------Favorites---------
   const isFavorited = (id) => favorites.some((fav) => fav.id === id);
 
   const toggleFavorite = (item) => {
