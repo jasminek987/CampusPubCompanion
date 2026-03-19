@@ -109,7 +109,7 @@ export default function InfoScreen() {
               openLink(`https://maps.app.goo.gl/fQcXQCVJoQi42rWu7?api=1&query=${encodeURIComponent(PUB_INFO.address)}`)
             }
           >
-            <Text style={styles.primaryButtonText}>Open in Maps</Text>
+            <Text style={styles.primaryButtonText}>Open in Google Maps</Text>
           </TouchableOpacity>
         </Card>
 
