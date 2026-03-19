@@ -105,7 +105,7 @@ export default function InfoScreen() {
           <TouchableOpacity
             style={styles.primaryButton}
             onPress={() =>
-              openLink(`https://maps.apple.com/?q=${encodeURIComponent(PUB_INFO.address)}`)
+              openLink(`https://maps.app.goo.gl/fQcXQCVJoQi42rWu7?api=1&query=${encodeURIComponent(PUB_INFO.address)}`)
             }
           >
             <Text style={styles.primaryButtonText}>Open in Maps</Text>
