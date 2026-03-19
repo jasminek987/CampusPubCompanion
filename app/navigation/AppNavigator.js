@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { EmailProvider } from '../context/EmailContext';
 import { CartProvider } from '../context/CartContext';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 import EventsScreen from '../screens/EventsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MenuScreen from '../screens/MenuScreen';
@@ -72,6 +73,7 @@ function BottomTabNavigator() {
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <AuthProvider>
     <EmailProvider>
       <CartProvider>
       <NavigationContainer>
@@ -87,6 +89,7 @@ export default function App() {
       </NavigationContainer>
       </CartProvider>
     </EmailProvider>
+    </AuthProvider>
     </SafeAreaView>
   );
 }
