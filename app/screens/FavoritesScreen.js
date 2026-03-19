@@ -43,11 +43,11 @@ export default function FavoritesScreen({ navigation }) {
     <View style={styles.container}>
       {/* Top Bar */}
       <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.pillBtn} activeOpacity={0.85}>
-          <Text style={styles.pillText}>← Back</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backbutton} activeOpacity={0.85}>
+          <Text style={styles.backText}>← Back</Text>
         </TouchableOpacity>
         <Text style={styles.screenTitle}>Favorites</Text>
-        <View style={styles.pillSpacer} />
+        <View style={styles.Spacer} />
       </View>
 
       {favorites.length === 0 ? (
@@ -87,23 +87,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  pillBtn: {
-    backgroundColor: 'rgba(255,255,255,0.95)',
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: '#E5E5EA',
+  backbutton : {
+    marginLeft: 16,
+    marginTop: 10,
+    marginBottom: 10,
   },
-  pillSpacer: {
+  
+    backText: {
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: '600',
+  },
+
+  Spacer: {
     paddingVertical: 10,
     paddingHorizontal: 14,
     opacity: 0,
   },
-  pillText: {
-    color: '#111',
-    fontWeight: '900',
-  },
+
   screenTitle: {
     fontSize: 18,
     fontWeight: '900',

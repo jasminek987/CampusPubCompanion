@@ -8,7 +8,6 @@ import { useAuth } from '../context/AuthContext';
 export default function CheckoutScreen({ navigation }) {
   const { cartItems } = useCartStore();
    const { isLoggedIn } = useAuth(); 
-   console.log('CHECKOUT isLoggedIn =', isLoggedIn);
 
   const total = cartItems.reduce((sum, row) => {
     const price = Number(row?.item?.price) || 0;
