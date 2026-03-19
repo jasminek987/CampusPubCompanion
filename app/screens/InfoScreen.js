@@ -29,18 +29,18 @@ const PUB_INFO = {
   ],
 };
 
-// Fix: was returning array with all days as one string
+
 function getTodayName() {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return days[new Date().getDay()];
 }
 
-// Fix: was capitalised OpenLink — wouldn't match JSX calls
+
 function openLink(url) {
   Linking.openURL(url).catch(() => {});
 }
 
-// Fix: was SectionHeader(Title) instead of ({ title })
+
 function SectionHeader({ title }) {
   return (
     <View style={styles.sectionHeader}>
