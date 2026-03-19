@@ -24,6 +24,9 @@ export default function EventsScreen() {
 
   return (
     <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainTabs')} style={styles.backButton} activeOpacity={0.85}>
+            <Text style={styles.backText}>← Back</Text>
+          </TouchableOpacity>
       <View style={styles.header}> 
         <View style={styles.headerCenter}>
           <Image source={{ uri: LOGO_URI }} style={styles.logo} resizeMode="contain" />
@@ -87,6 +90,19 @@ const styles = StyleSheet.create({
     color: '#111',
     letterSpacing: 0.3,
   },
+
+    backButton: {
+    marginBottom: 10,
+    marginTop: 10,
+    marginLeft: 16,
+  },
+
+  backText: {
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: '600',
+  },
+
   subtitle: { marginTop: 4, color: '#555' },
   listContent: { paddingHorizontal: 16, paddingBottom: 24 },
   card: {

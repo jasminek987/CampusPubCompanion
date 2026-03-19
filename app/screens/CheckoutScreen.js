@@ -31,6 +31,9 @@ export default function CheckoutScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backbutton} activeOpacity={0.85}>
+       <Text style={styles.backText}>← Back</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Checkout</Text>
 
       {cartItems.length === 0 ? (
@@ -93,8 +96,13 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#111',
     marginBottom: 16,
+    alignContent: 'center',
   },
-
+    backText: {
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: '600',
+  },
   summaryCard: {
     backgroundColor: '#fff',
     borderRadius: 16,
