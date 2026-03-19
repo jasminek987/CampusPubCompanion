@@ -19,6 +19,9 @@ import SpecialsScreen from '../screens/SpecialsScreen';
 import ItemDetailScreen from '../screens/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
+import RegistrationScreen from '../screens/RegistrationScreen';
+
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
@@ -85,6 +88,8 @@ export default function App() {
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
         <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
         <Stack.Screen name="Specials" component={SpecialsScreen} />
+        <Stack.Screen name="CreateAccount" component={RegistrationScreen} />
+        
         </Stack.Navigator>
       </NavigationContainer>
       </CartProvider>
