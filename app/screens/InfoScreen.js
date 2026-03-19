@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'; 
 
 const PUB_INFO = {
   hours: [
@@ -120,7 +121,7 @@ export default function InfoScreen() {
             onPress={() => openLink(`tel:${PUB_INFO.phone}`)}
           >
             <View style={styles.contactIconWrap}>
-              <Text style={styles.contactIcon}>📞</Text>
+              <Ionicons name="call-outline" size={20} color={BROWN} />
             </View>
             <View>
               <Text style={styles.contactLabel}>Phone</Text>
@@ -135,7 +136,7 @@ export default function InfoScreen() {
             onPress={() => openLink(`mailto:${PUB_INFO.email}`)}
           >
             <View style={styles.contactIconWrap}>
-              <Text style={styles.contactIcon}>✉️</Text>
+              <Ionicons name="mail-outline" size={20} color={BROWN} />
             </View>
             <View>
               <Text style={styles.contactLabel}>Email</Text>
@@ -302,9 +303,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
-  },
-  contactIcon: {
-    fontSize: 18,
   },
   contactLabel: {
     fontSize: 12,
