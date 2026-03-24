@@ -1,10 +1,26 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { addFavorite, removeFavorite, getFavorites } from '../../services/favoritesService';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [favorites, setFavorites] = useState([]);
+
+  const userId = "testUser1";
+
+  // Load favorites from Firestore on startup
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        const saved = await getFavorites(userId);
+        setFavorites(saved);
+      } catch (error) {
+        console.log('Error loading favorites:', error);
+      }
+    };
+    loadFavorites();
+  }, []);
 
   // ---------- Cart ----------
   const addToCart = (item) => {
@@ -48,12 +64,16 @@ export function CartProvider({ children }) {
   // --------Favorites---------
   const isFavorited = (id) => favorites.some((fav) => fav.id === id);
 
-  const toggleFavorite = (item) => {
-    setFavorites((prev) =>
-      prev.some((fav) => fav.id === item.id)
-        ? prev.filter((fav) => fav.id !== item.id)
-        : [...prev, item]
-    );
+  const toggleFavorite = async (item) => {
+    const alreadyFavorite = favorites.some((fav) => fav.id === item.id);
+
+    if (alreadyFavorite) {
+      setFavorites((prev) => prev.filter((fav) => fav.id !== item.id));
+      await removeFavorite(userId, item.id);
+    } else {
+      setFavorites((prev) => [...prev, item]);
+      await addFavorite(userId, item);
+    }
   };
 
   return (

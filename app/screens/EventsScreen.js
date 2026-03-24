@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet } from 'react-native';
-import DataService from '../services/DataService';
+import DataService from '../../services/DataService';
 
 const LOGO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/1634057838043-H5MLXFNY8JSXZY8C1E2V/thirsty+moose+pub+logo.jpg?format=1500w';

@@ -1,6 +1,6 @@
-import menuData from '../data/menuData.js';
-import specialsData from '../data/specialsData.js';
-import eventsData from '../data/eventsData.js';
+import menuData from '../app/data/menuData.js';
+import specialsData from '../app/data/specialsData.js';
+import eventsData from '../app/data/eventsData.js';
 
 export const DataServices = {
   getMenu() {

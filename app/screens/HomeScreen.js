@@ -1,5 +1,4 @@
-
-import React from 'react';
+import {React, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,10 +9,12 @@ import {
   StyleSheet,
 } from 'react-native';
 
+
 const screenWidth = Dimensions.get('window').width;
 
 const HERO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/28b658de-028f-445f-823d-965837db06e0/IMG_8683.JPG?format=2500w';
+
 
 export default function HomeScreen({ navigation }) {
 
