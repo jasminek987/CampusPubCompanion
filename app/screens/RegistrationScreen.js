@@ -12,7 +12,6 @@ KeyboardAvoidingView,
 Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
 
