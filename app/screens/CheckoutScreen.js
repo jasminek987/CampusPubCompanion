@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useCartStore } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { saveOrder } from '../../services/OrderService';
+import {  saveOrder, createOrder } from '../../services/OrderService';
 
 
 export default function CheckoutScreen({ navigation }) {
@@ -15,20 +15,20 @@ export default function CheckoutScreen({ navigation }) {
     return sum + price * qty;
   }, 0);
 
-  const handleCheckout = async () => {
-    if (!isLoggedIn) {
-      Alert.alert(
-        'Login required',
-        'Please log in or sign up before placing an order.'
-      );
-      navigation.navigate('Login');
-      return;
-    }
+const handleCheckout = async () => {
+  if (!isLoggedIn) {
+    Alert.alert(
+      'Login required',
+      'Please log in or sign up before placing an order.'
+    );
+    navigation.navigate('Login');
+    return;
+  }
 
-    const order = OrderService.createOrder(cartItems);
-    await saveOrder("testUser1", order);
-    navigation.navigate('OrderSuccess', { order });
-  };
+  const order = createOrder(cartItems);
+  await saveOrder("testUser1", order);
+  navigation.navigate('OrderSuccess', { order });
+};
 
   return (
     <View style={styles.container}>

@@ -9,7 +9,7 @@ export const addFavorite = async (userId, item) => {
     price: item.price,
     description: item.description || "",
     image: item.image || "",
-    createdAt: new Date()
+    createdAt: new Date(),
   });
 };
 

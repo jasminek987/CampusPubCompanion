@@ -265,10 +265,11 @@ const styles = StyleSheet.create({
   },
 
   primaryBtn: {
-    width: '20%',
+    width: '50%',
     backgroundColor: '#3b1713',
     paddingVertical: 14,
     borderRadius: 14,
+    borderWidth: 1,
     alignItems: 'center',
 
   },
@@ -277,6 +278,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '900',
     fontSize: 14,
+    alignContent: 'center', 
   },
 
   secondaryBtn: {
