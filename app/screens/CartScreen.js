@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useCartStore } from '../context/CartContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function CartScreen({ navigation }) {
@@ -65,7 +66,15 @@ export default function CartScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cart</Text>
+      <View style={styles.topBar}>
+        <Text style={styles.title}>Cart</Text>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('OrderHistory')}
+        >
+          <Ionicons name="receipt-outline" size={26} color="#111" />
+        </TouchableOpacity>
+      </View>
 
       {cartItems.length === 0 ? (
         <View style={styles.emptyBox}>
@@ -124,6 +133,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#F2F2F2',
+  },
+
+  topBar: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 12,
   },
 
   title: {

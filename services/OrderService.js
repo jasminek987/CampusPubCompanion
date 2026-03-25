@@ -1,7 +1,7 @@
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
-// Create order (UI logic)
+// Create order
 export const createOrder = (cartItems) => {
   const orderNumber = Date.now().toString(15).toUpperCase();
 
@@ -12,7 +12,7 @@ export const createOrder = (cartItems) => {
   };
 };
 
-// Save order to Firebase
+// Save order
 export const saveOrder = async (userId, order) => {
   try {
     console.log("saving order for user:", userId);
@@ -38,4 +38,16 @@ export const saveOrder = async (userId, order) => {
   } catch (error) {
     console.log("Error saving order:", error);
   }
+};
+
+// Get order history
+export const getOrders = async (userId) => {
+  const ref = collection(db, "users", userId, "orders");
+  const q = query(ref, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 };

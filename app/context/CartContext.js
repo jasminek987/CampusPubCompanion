@@ -61,6 +61,19 @@ export function CartProvider({ children }) {
     setCartItems([]);
   };
 
+const addOrderToCart = (items) => {
+  const formatted = items.map((item) => ({
+    item: {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+    },
+    quantity: item.quantity,
+  }));
+
+  setCartItems(formatted);
+};
+
   // --------Favorites---------
   const isFavorited = (id) => favorites.some((fav) => fav.id === id);
 
@@ -85,6 +98,7 @@ export function CartProvider({ children }) {
         decreaseQuantity,
         removeFromCart,
         clearCart,
+        addOrderToCart,
         favorites,
         isFavorited,
         toggleFavorite,
