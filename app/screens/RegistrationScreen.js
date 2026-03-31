@@ -14,6 +14,9 @@ Platform,
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase/firebaseConfig';
 
 export default function RegistrationScreen() {
 const navigation = useNavigation();
@@ -27,31 +30,52 @@ const [emailInput, setEmailInput] = useState('');
 const [password, setPassword] = useState('');
 const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
 
-const handleSubmit = () => {
-if (!firstNameInput.trim()) return Alert.alert('Error', 'First name is empty');
-if (!lastNameInput.trim()) return Alert.alert('Error', 'Last name is empty');
-if (!usernameInput.trim()) return Alert.alert('Error', 'Username is empty');
-if (!mobileNumberInput.trim()) return Alert.alert('Error', 'Mobile number is empty');
-if (!emailInput.trim()) return Alert.alert('Error', 'Email is empty');
-if (password.length < 6) return Alert.alert('Error', 'Password must be at least 6 characters');
-if (password !== confirmPasswordInput) return Alert.alert('Error', 'Passwords do not match');
+const handleSubmit = async () => {
+  if (!firstNameInput.trim()) return Alert.alert('Error', 'First name is empty');
+  if (!lastNameInput.trim()) return Alert.alert('Error', 'Last name is empty');
+  if (!usernameInput.trim()) return Alert.alert('Error', 'Username is empty');
+  if (!mobileNumberInput.trim()) return Alert.alert('Error', 'Mobile number is empty');
+  if (!emailInput.trim()) return Alert.alert('Error', 'Email is empty');
+  if (password.length < 6) return Alert.alert('Error', 'Password must be at least 6 characters');
+  if (password !== confirmPasswordInput) return Alert.alert('Error', 'Passwords do not match');
 
-setEmail(emailInput.trim());
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      emailInput.trim(),
+      password
+    );
 
-setFirstNameInput('');
-setLastNameInput('');
-setUsernameInput('');
-setMobileNumberInput('');
-setEmailInput('');
-setPassword('');
-setConfirmPasswordInput('');
+    const firebaseUser = userCredential.user;
 
-navigation.reset({
-index: 0,
-routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
-});
+    await setDoc(doc(db, 'users', firebaseUser.uid), {
+      firstName: firstNameInput.trim(),
+      lastName: lastNameInput.trim(),
+      username: usernameInput.trim(),
+      mobileNumber: mobileNumberInput.trim(),
+      email: emailInput.trim(),
+      createdAt: new Date().toISOString(),
+    });
 
-Alert.alert('Success', 'Account created successfully');
+    setEmail(emailInput.trim());
+
+    setFirstNameInput('');
+    setLastNameInput('');
+    setUsernameInput('');
+    setMobileNumberInput('');
+    setEmailInput('');
+    setPassword('');
+    setConfirmPasswordInput('');
+
+    Alert.alert('Success', 'Account created successfully');
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
+    });
+  } catch (error) {
+    Alert.alert('Registration Error', error.message);
+  }
 };
 
 return (
