@@ -1,15 +1,14 @@
-
 import React, { useState } from 'react';
 import {
-View,
-Text,
-TextInput,
-StyleSheet,
-Alert,
-ScrollView,
-TouchableOpacity,
-KeyboardAvoidingView,
-Platform,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
@@ -19,192 +18,220 @@ import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase/firebaseConfig';
 
 export default function RegistrationScreen() {
-const navigation = useNavigation();
-const { setEmail } = useEmailStore();
+  const navigation = useNavigation();
+  const { setEmail } = useEmailStore();
 
-const [firstNameInput, setFirstNameInput] = useState('');
-const [lastNameInput, setLastNameInput] = useState('');
-const [usernameInput, setUsernameInput] = useState('');
-const [mobileNumberInput, setMobileNumberInput] = useState('');
-const [emailInput, setEmailInput] = useState('');
-const [password, setPassword] = useState('');
-const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [firstNameInput, setFirstNameInput] = useState('');
+  const [lastNameInput, setLastNameInput] = useState('');
+  const [usernameInput, setUsernameInput] = useState('');
+  const [mobileNumberInput, setMobileNumberInput] = useState('');
+  const [emailInput, setEmailInput] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-const handleSubmit = async () => {
-  if (!firstNameInput.trim()) return Alert.alert('Error', 'First name is empty');
-  if (!lastNameInput.trim()) return Alert.alert('Error', 'Last name is empty');
-  if (!usernameInput.trim()) return Alert.alert('Error', 'Username is empty');
-  if (!mobileNumberInput.trim()) return Alert.alert('Error', 'Mobile number is empty');
-  if (!emailInput.trim()) return Alert.alert('Error', 'Email is empty');
-  if (password.length < 6) return Alert.alert('Error', 'Password must be at least 6 characters');
-  if (password !== confirmPasswordInput) return Alert.alert('Error', 'Passwords do not match');
+  const handleSubmit = async () => {
+    if (loading) return;
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      emailInput.trim(),
-      password
-    );
+    if (!firstNameInput.trim()) {
+      Alert.alert('Error', 'First name is empty');
+      return;
+    }
 
-    const firebaseUser = userCredential.user;
+    if (!lastNameInput.trim()) {
+      Alert.alert('Error', 'Last name is empty');
+      return;
+    }
 
-    await setDoc(doc(db, 'users', firebaseUser.uid), {
-      firstName: firstNameInput.trim(),
-      lastName: lastNameInput.trim(),
-      username: usernameInput.trim(),
-      mobileNumber: mobileNumberInput.trim(),
-      email: emailInput.trim(),
-      createdAt: new Date().toISOString(),
-    });
+    if (!usernameInput.trim()) {
+      Alert.alert('Error', 'Username is empty');
+      return;
+    }
 
-    setEmail(emailInput.trim());
+    if (!mobileNumberInput.trim()) {
+      Alert.alert('Error', 'Mobile number is empty');
+      return;
+    }
 
-    setFirstNameInput('');
-    setLastNameInput('');
-    setUsernameInput('');
-    setMobileNumberInput('');
-    setEmailInput('');
-    setPassword('');
-    setConfirmPasswordInput('');
+    if (!emailInput.trim()) {
+      Alert.alert('Error', 'Email is empty');
+      return;
+    }
 
-    Alert.alert('Success', 'Account created successfully');
+    if (password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters');
+      return;
+    }
 
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
-    });
-  } catch (error) {
-    Alert.alert('Registration Error', error.message);
-  }
-};
+    if (password !== confirmPasswordInput) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
 
-return (
-<SafeAreaView style={styles.container}>
-<TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-<Text style={styles.backText}>← Back</Text>
-</TouchableOpacity> 
-<Text style={styles.title}>Registration</Text>
+    try {
+      setLoading(true);
 
-<KeyboardAvoidingView
-style={{ flex: 1 }}
-behavior={Platform.OS === 'ios' ? 'padding' : undefined}
->
-<ScrollView
-contentContainerStyle={{ paddingBottom: 30 }}
-keyboardShouldPersistTaps="always"
-showsVerticalScrollIndicator={false}
->
-<Text style={styles.label}>First Name</Text>
-<TextInput
-style={styles.input}
-placeholder="Enter your first name"
-value={firstNameInput}
-onChangeText={setFirstNameInput}
-/>
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        emailInput.trim(),
+        password
+      );
 
-<Text style={styles.label}>Last Name</Text>
-<TextInput
-style={styles.input}
-placeholder="Enter your last name"
-value={lastNameInput}
-onChangeText={setLastNameInput}
-/>
+      const firebaseUser = userCredential.user;
 
-<Text style={styles.label}>Username</Text>
-<TextInput
-style={styles.input}
-placeholder="Enter your username"
-value={usernameInput}
-onChangeText={setUsernameInput}
-autoCapitalize="none"
-/>
+      await setDoc(doc(db, 'users', firebaseUser.uid), {
+        firstName: firstNameInput.trim(),
+        lastName: lastNameInput.trim(),
+        username: usernameInput.trim(),
+        mobileNumber: mobileNumberInput.trim(),
+        email: emailInput.trim(),
+        createdAt: new Date().toISOString(),
+      });
 
-<Text style={styles.label}>Mobile Number</Text>
-<TextInput
-style={styles.input}
-placeholder="Enter your mobile number"
-keyboardType="phone-pad"
-value={mobileNumberInput}
-onChangeText={setMobileNumberInput}
-/>
+      setEmail(emailInput.trim());
 
-<Text style={styles.label}>Email</Text>
-<TextInput
-style={styles.input}
-placeholder="Enter your email"
-keyboardType="email-address"
-autoCapitalize="none"
-value={emailInput}
-onChangeText={setEmailInput}
-/>
+      setFirstNameInput('');
+      setLastNameInput('');
+      setUsernameInput('');
+      setMobileNumberInput('');
+      setEmailInput('');
+      setPassword('');
+      setConfirmPasswordInput('');
 
-<Text style={styles.label}>Password</Text>
-<TextInput
-style={styles.input}
-placeholder="Enter your password"
-secureTextEntry
-value={password}
-onChangeText={setPassword}
-/>
+      Alert.alert('Success', 'Account created successfully');
 
-<Text style={styles.label}>Confirm Password</Text>
-<TextInput
-style={styles.input}
-placeholder="Confirm your password"
-secureTextEntry
-value={confirmPasswordInput}
-onChangeText={setConfirmPasswordInput}
-/>
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
+      });
+    } catch (error) {
+      Alert.alert('Registration Error', error.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-<CreateAccountButton onPress={handleSubmit} />
-</ScrollView>
-</KeyboardAvoidingView>
-</SafeAreaView>
-);
+  return (
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Text style={styles.backText}>← Back</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.title}>Registration</Text>
+
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 30 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <Text style={styles.label}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your first name"
+            value={firstNameInput}
+            onChangeText={setFirstNameInput}
+          />
+
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your last name"
+            value={lastNameInput}
+            onChangeText={setLastNameInput}
+          />
+
+          <Text style={styles.label}>Username</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your username"
+            value={usernameInput}
+            onChangeText={setUsernameInput}
+            autoCapitalize="none"
+          />
+
+          <Text style={styles.label}>Mobile Number</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your mobile number"
+            keyboardType="phone-pad"
+            value={mobileNumberInput}
+            onChangeText={setMobileNumberInput}
+          />
+
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={emailInput}
+            onChangeText={setEmailInput}
+          />
+
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+
+          <Text style={styles.label}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm your password"
+            secureTextEntry
+            value={confirmPasswordInput}
+            onChangeText={setConfirmPasswordInput}
+          />
+
+          <CreateAccountButton onPress={handleSubmit} disabled={loading} />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-padding: 20,
-backgroundColor: '#fff',
-},
-backButton: {
-paddingHorizontal: 16,
-paddingTop: 8,
-paddingBottom: 6,
-},
-backText: {
-fontSize: 16,
-color: 'black',
-fontWeight: '600',
-},
-title: {
-fontSize: 28,
-fontWeight: 'bold',
-textAlign: 'center',
-marginBottom: 15,
-},
-label: {
-fontSize: 16,
-fontWeight: '600',
-marginBottom: 8,
-marginTop: 15,
-},
-input: {
-height: 50,
-borderWidth: 1,
-borderColor: '#ddd',
-borderRadius: 8,
-paddingHorizontal: 15,
-fontSize: 16,
-backgroundColor: '#f9f9f9',
-},
-copyright: {
-textAlign: 'center',
-color: '#666',
-fontSize: 12,
-marginTop: 20,
-},
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  backButton: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 6,
+  },
+  backText: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: '600',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+    marginTop: 15,
+  },
+  input: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    backgroundColor: '#f9f9f9',
+  },
 });
-
