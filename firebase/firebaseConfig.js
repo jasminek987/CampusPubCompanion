@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { initializeAuth, getReactNativePersistence, getAuth } from 'firebase/auth';
+import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
@@ -11,10 +11,9 @@ const firebaseConfig = {
   storageBucket: 'campuspubcompanion-5c942.firebasestorage.app',
   messagingSenderId: '1020087843021',
   appId: '1:1020087843021:web:e7d0ad8fb2358a52261184',
-  measurementId: 'G-RB98D18Q1Z',
 };
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const auth =
   Platform.OS === 'web'

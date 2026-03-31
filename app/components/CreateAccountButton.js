@@ -4,12 +4,17 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 export default function CreateAccountButton({ onPress, disabled = false }) {
   return (
     <TouchableOpacity
+      onPress={() => {
+        console.log('CreateAccountButton tapped');
+        if (onPress) onPress();
+      }}
       style={[styles.button, disabled && styles.disabledButton]}
-      onPress={onPress}
       activeOpacity={0.7}
       disabled={disabled}
     >
-      <Text style={styles.buttonText}>Create Account</Text>
+      <Text style={styles.buttonText}>
+        {disabled ? 'Creating Account...' : 'Create Account'}
+      </Text>
     </TouchableOpacity>
   );
 }

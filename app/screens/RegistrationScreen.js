@@ -31,6 +31,8 @@ export default function RegistrationScreen() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    console.log('Create Account pressed');
+
     if (loading) return;
 
     if (!firstNameInput.trim()) {
@@ -70,12 +72,15 @@ export default function RegistrationScreen() {
 
     try {
       setLoading(true);
+      console.log('Starting Firebase registration...');
 
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         emailInput.trim(),
         password
       );
+
+      console.log('User created:', userCredential.user.uid);
 
       const firebaseUser = userCredential.user;
 
@@ -88,6 +93,8 @@ export default function RegistrationScreen() {
         createdAt: new Date().toISOString(),
       });
 
+      console.log('User profile saved to Firestore');
+
       setEmail(emailInput.trim());
 
       setFirstNameInput('');
@@ -98,13 +105,23 @@ export default function RegistrationScreen() {
       setPassword('');
       setConfirmPasswordInput('');
 
-      Alert.alert('Success', 'Account created successfully');
-
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
-      });
+      Alert.alert(
+        'Success',
+        'Account created successfully',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
+              });
+            },
+          },
+        ]
+      );
     } catch (error) {
+      console.log('Registration error full:', error);
       Alert.alert('Registration Error', error.message || 'Something went wrong');
     } finally {
       setLoading(false);
@@ -124,7 +141,7 @@ export default function RegistrationScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
-          contentContainerStyle={{ paddingBottom: 30 }}
+          contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -200,12 +217,15 @@ export default function RegistrationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#fff',
   },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+  },
   backButton: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
+    paddingHorizontal: 20,
+    paddingTop: 12,
     paddingBottom: 6,
   },
   backText: {
