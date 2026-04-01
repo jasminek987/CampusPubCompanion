@@ -13,7 +13,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase/firebaseConfig';
 
@@ -35,6 +35,10 @@ export default function RegistrationScreen() {
 
     if (loading) return;
 
+    const cleanEmail = emailInput.trim();
+    const cleanPassword = password.trim();
+    const cleanConfirmPassword = confirmPasswordInput.trim();
+
     if (!firstNameInput.trim()) {
       Alert.alert('Error', 'First name is empty');
       return;
@@ -55,47 +59,47 @@ export default function RegistrationScreen() {
       return;
     }
 
-    if (!emailInput.trim()) {
+    if (!cleanEmail) {
       Alert.alert('Error', 'Email is empty');
       return;
     }
 
-    if (password.length < 6) {
+    if (cleanPassword.length < 6) {
       Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
 
-    if (password !== confirmPasswordInput) {
+    if (cleanPassword !== cleanConfirmPassword) {
       Alert.alert('Error', 'Passwords do not match');
       return;
     }
 
     try {
       setLoading(true);
-      console.log('Starting Firebase registration...');
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        emailInput.trim(),
-        password
-      );
+const userCredential = await createUserWithEmailAndPassword(
+  auth,
+  cleanEmail,
+  cleanPassword
+);
 
-      console.log('User created:', userCredential.user.uid);
+console.log('User created:', userCredential.user.uid);
 
-      const firebaseUser = userCredential.user;
+await sendEmailVerification(userCredential.user);
 
-      await setDoc(doc(db, 'users', firebaseUser.uid), {
+await auth.currentUser.reload();
+const uid = auth.currentUser.uid;
+
+      await setDoc(doc(db, 'users', uid), {
         firstName: firstNameInput.trim(),
         lastName: lastNameInput.trim(),
         username: usernameInput.trim(),
         mobileNumber: mobileNumberInput.trim(),
-        email: emailInput.trim(),
+        email: cleanEmail,
         createdAt: new Date().toISOString(),
       });
 
-      console.log('User profile saved to Firestore');
-
-      setEmail(emailInput.trim());
+      setEmail(cleanEmail);
 
       setFirstNameInput('');
       setLastNameInput('');
@@ -105,24 +109,35 @@ export default function RegistrationScreen() {
       setPassword('');
       setConfirmPasswordInput('');
 
-      Alert.alert(
-        'Success',
-        'Account created successfully',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
-              });
-            },
+      Alert.alert('Success', 'Account created successfully', [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
+            });
           },
-        ]
-      );
+        },
+      ]);
     } catch (error) {
-      console.log('Registration error full:', error);
-      Alert.alert('Registration Error', error.message || 'Something went wrong');
+      console.log('REGISTRATION ERROR CODE:', error.code);
+      console.log('REGISTRATION ERROR MESSAGE:', error.message);
+      console.log('REGISTRATION ERROR FULL:', error);
+
+      let msg = 'Something went wrong';
+
+      if (error.code === 'auth/email-already-in-use') {
+        msg = 'This email is already registered.';
+      } else if (error.code === 'auth/invalid-email') {
+        msg = 'Invalid email format.';
+      } else if (error.code === 'auth/weak-password') {
+        msg = 'Password is too weak.';
+      } else if (error.code === 'permission-denied') {
+        msg = 'Firestore permission denied.';
+      }
+
+      Alert.alert('Registration Error', msg);
     } finally {
       setLoading(false);
     }

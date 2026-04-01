@@ -22,7 +22,7 @@ export default function SpecialsScreen() {
   }, []);
 
   return (
-    <View>
+    <View style={{ flex: 1}}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>

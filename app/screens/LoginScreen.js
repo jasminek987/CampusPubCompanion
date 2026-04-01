@@ -11,7 +11,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEmailStore } from '../context/EmailContext';
 import LoginButton from '../components/LoginButton';
 import CreateAccountButton from '../components/CreateAccountButton';
@@ -28,6 +27,7 @@ export default function LoginScreen() {
 
   const validate = () => {
     const cleanEmail = email.trim();
+    const cleanPassword = password.trim();
 
     if (!cleanEmail) {
       Alert.alert('Error', 'Email is empty');
@@ -39,12 +39,12 @@ export default function LoginScreen() {
       return false;
     }
 
-    if (!password) {
+    if (!cleanPassword) {
       Alert.alert('Error', 'Password is empty');
       return false;
     }
 
-    if (password.length < 6) {
+    if (cleanPassword.length < 6) {
       Alert.alert('Weak Password', 'Password must be at least 6 characters.');
       return false;
     }
@@ -58,18 +58,24 @@ export default function LoginScreen() {
     if (loading) return;
     if (!validate()) return;
 
+    const cleanEmail = email.trim();
+    const cleanPassword = password.trim();
+
     try {
       setLoading(true);
 
+      console.log('LOGIN EMAIL:', `[${cleanEmail}]`);
+      console.log('LOGIN PASSWORD LENGTH:', cleanPassword.length);
+
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        email.trim(),
-        password
+        cleanEmail,
+        cleanPassword
       );
 
       console.log('Login success:', userCredential.user.uid);
 
-      setEmail(email.trim());
+      setEmail(cleanEmail);
 
       setEmailInput('');
       setPassword('');
@@ -86,15 +92,28 @@ export default function LoginScreen() {
         },
       ]);
     } catch (error) {
+      console.log('LOGIN ERROR CODE:', error.code);
+      console.log('LOGIN ERROR MESSAGE:', error.message);
       console.log('LOGIN ERROR FULL:', error);
-      Alert.alert('Login Error', error.message || 'Something went wrong');
+
+      let msg = 'Something went wrong';
+
+      if (error.code === 'auth/invalid-credential') {
+        msg = 'Invalid email or password.';
+      } else if (error.code === 'auth/invalid-email') {
+        msg = 'Invalid email format.';
+      } else if (error.code === 'auth/too-many-requests') {
+        msg = 'Too many attempts. Please try again later.';
+      }
+
+      Alert.alert('Login Error', msg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backButton}
@@ -142,7 +161,7 @@ export default function LoginScreen() {
           />
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
 
