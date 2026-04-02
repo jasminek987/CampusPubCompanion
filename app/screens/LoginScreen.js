@@ -10,11 +10,16 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
 import LoginButton from '../components/LoginButton';
 import CreateAccountButton from '../components/CreateAccountButton';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 
 export default function LoginScreen() {
@@ -26,7 +31,7 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
 
   const validate = () => {
-    const cleanEmail = email.trim();
+    const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
     if (!cleanEmail) {
@@ -53,19 +58,14 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
-    console.log('Login pressed');
-
     if (loading) return;
     if (!validate()) return;
 
-    const cleanEmail = email.trim();
+    const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
     try {
       setLoading(true);
-
-      console.log('LOGIN EMAIL:', `[${cleanEmail}]`);
-      console.log('LOGIN PASSWORD LENGTH:', cleanPassword.length);
 
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -73,10 +73,46 @@ export default function LoginScreen() {
         cleanPassword
       );
 
-      console.log('Login success:', userCredential.user.uid);
+      const user = userCredential.user;
+      await user.reload();
+
+      if (!auth.currentUser?.emailVerified) {
+        Alert.alert(
+          'Email Not Verified',
+          'Please verify your email before logging in.',
+          [
+            {
+              text: 'Resend Email',
+              onPress: async () => {
+                try {
+                  if (auth.currentUser) {
+                    await sendEmailVerification(auth.currentUser);
+                    Alert.alert(
+                      'Verification Sent',
+                      'A new verification email has been sent.'
+                    );
+                  }
+                } catch (err) {
+                  console.log('RESEND VERIFICATION ERROR:', err);
+                  Alert.alert(
+                    'Error',
+                    'Could not resend verification email right now.'
+                  );
+                }
+              },
+            },
+            {
+              text: 'OK',
+              style: 'cancel',
+            },
+          ]
+        );
+
+        await signOut(auth);
+        return;
+      }
 
       setEmail(cleanEmail);
-
       setEmailInput('');
       setPassword('');
 
@@ -94,7 +130,6 @@ export default function LoginScreen() {
     } catch (error) {
       console.log('LOGIN ERROR CODE:', error.code);
       console.log('LOGIN ERROR MESSAGE:', error.message);
-      console.log('LOGIN ERROR FULL:', error);
 
       let msg = 'Something went wrong';
 
@@ -113,7 +148,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backButton}
@@ -126,7 +161,7 @@ export default function LoginScreen() {
       </View>
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
@@ -161,7 +196,7 @@ export default function LoginScreen() {
           />
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -170,13 +205,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  keyboardContainer: {
+    flex: 1,
+  },
   scrollContent: {
     paddingHorizontal: 20,
     paddingBottom: 30,
+    flexGrow: 1,
   },
   backButton: {
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 6,
   },
   backText: {

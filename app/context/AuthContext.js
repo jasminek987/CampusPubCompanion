@@ -43,16 +43,17 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        userProfile,
-        isLoggedIn: !!user,
-        loading,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  value={{
+    user,
+    userProfile,
+    isLoggedIn: !!user?.emailVerified,
+    emailVerified: !!user?.emailVerified,
+    loading,
+    logout,
+  }}
+>
+  {children}
+</AuthContext.Provider>
   );
 }
 

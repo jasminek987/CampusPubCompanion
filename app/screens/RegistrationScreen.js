@@ -8,13 +8,17 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase/firebaseConfig';
 
 export default function RegistrationScreen() {
@@ -31,11 +35,9 @@ export default function RegistrationScreen() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    console.log('Create Account pressed');
-
     if (loading) return;
 
-    const cleanEmail = emailInput.trim();
+    const cleanEmail = emailInput.trim().toLowerCase();
     const cleanPassword = password.trim();
     const cleanConfirmPassword = confirmPasswordInput.trim();
 
@@ -64,6 +66,11 @@ export default function RegistrationScreen() {
       return;
     }
 
+    if (!cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+
     if (cleanPassword.length < 6) {
       Alert.alert('Error', 'Password must be at least 6 characters');
       return;
@@ -77,29 +84,27 @@ export default function RegistrationScreen() {
     try {
       setLoading(true);
 
-const userCredential = await createUserWithEmailAndPassword(
-  auth,
-  cleanEmail,
-  cleanPassword
-);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        cleanEmail,
+        cleanPassword
+      );
 
-console.log('User created:', userCredential.user.uid);
+      const user = userCredential.user;
 
-await sendEmailVerification(userCredential.user);
-
-await auth.currentUser.reload();
-const uid = auth.currentUser.uid;
-
-      await setDoc(doc(db, 'users', uid), {
+      await setDoc(doc(db, 'users', user.uid), {
         firstName: firstNameInput.trim(),
         lastName: lastNameInput.trim(),
         username: usernameInput.trim(),
         mobileNumber: mobileNumberInput.trim(),
         email: cleanEmail,
-        createdAt: new Date().toISOString(),
+        emailVerified: false,
+        createdAt: serverTimestamp(),
       });
 
+      await sendEmailVerification(user);
       setEmail(cleanEmail);
+      await signOut(auth);
 
       setFirstNameInput('');
       setLastNameInput('');
@@ -109,21 +114,15 @@ const uid = auth.currentUser.uid;
       setPassword('');
       setConfirmPasswordInput('');
 
-      Alert.alert('Success', 'Account created successfully', [
-        {
-          text: 'OK',
-          onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'MainTabs', params: { screen: 'Home' } }],
-            });
-          },
-        },
-      ]);
+      Alert.alert(
+        'Verify Your Email',
+        'Your account was created. We sent a verification link to your email. Please verify your account before logging in.'
+      );
+
+      navigation.navigate('Login');
     } catch (error) {
       console.log('REGISTRATION ERROR CODE:', error.code);
       console.log('REGISTRATION ERROR MESSAGE:', error.message);
-      console.log('REGISTRATION ERROR FULL:', error);
 
       let msg = 'Something went wrong';
 
@@ -144,7 +143,7 @@ const uid = auth.currentUser.uid;
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
@@ -152,7 +151,7 @@ const uid = auth.currentUser.uid;
       <Text style={styles.title}>Registration</Text>
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={styles.keyboardContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
@@ -234,13 +233,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  keyboardContainer: {
+    flex: 1,
+  },
   scrollContent: {
     paddingHorizontal: 20,
     paddingBottom: 30,
+    flexGrow: 1,
   },
   backButton: {
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 6,
   },
   backText: {
