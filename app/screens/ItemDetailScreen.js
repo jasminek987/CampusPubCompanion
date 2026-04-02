@@ -31,7 +31,15 @@ export default function ItemDetailScreen({ route, navigation }) {
 
         <View style={styles.topBarRight}>
           {/* Heart Button */}
-          <TouchableOpacity onPress={() => toggleFavorite(item)} style={styles.topBtn} activeOpacity={0.85}>
+          <TouchableOpacity
+  onPress={() => {
+    console.log('DETAIL SCREEN ITEM:', item);
+    console.log('DETAIL SCREEN ITEM ID:', item?.id);
+    toggleFavorite(item);
+  }}
+  style={styles.topBtn}
+  activeOpacity={0.85}
+>
             <Ionicons
               name={favorited ? 'heart' : 'heart-outline'}
               size={20}

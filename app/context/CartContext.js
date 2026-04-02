@@ -1,17 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { addFavorite, removeFavorite, getFavorites } from '../../services/favoritesService';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const { user } = useAuth();
 
-  const userId = "testUser1";
+  const userId = user?.uid;
 
-  // Load favorites from Firestore on startup
   useEffect(() => {
     const loadFavorites = async () => {
+      if (!userId) {
+        setFavorites([]);
+        return;
+      }
+
       try {
         const saved = await getFavorites(userId);
         setFavorites(saved);
@@ -19,18 +25,20 @@ export function CartProvider({ children }) {
         console.log('Error loading favorites:', error);
       }
     };
-    loadFavorites();
-  }, []);
 
-  // ---------- Cart ----------
+    loadFavorites();
+  }, [userId]);
+
   const addToCart = (item) => {
     setCartItems((prev) => {
       const existing = prev.find((p) => p.item.id === item.id);
+
       if (existing) {
         return prev.map((p) =>
           p.item.id === item.id ? { ...p, quantity: p.quantity + 1 } : p
         );
       }
+
       return [...prev, { item, quantity: 1 }];
     });
   };
@@ -61,31 +69,44 @@ export function CartProvider({ children }) {
     setCartItems([]);
   };
 
-const addOrderToCart = (items) => {
-  const formatted = items.map((item) => ({
-    item: {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-    },
-    quantity: item.quantity,
-  }));
+  const addOrderToCart = (items) => {
+    const formatted = items.map((item) => ({
+      item: {
+        id: item.id,
+        name: item.name,
+        price: item.price,
+      },
+      quantity: item.quantity,
+    }));
 
-  setCartItems(formatted);
-};
+    setCartItems(formatted);
+  };
 
-  // --------Favorites---------
   const isFavorited = (id) => favorites.some((fav) => fav.id === id);
 
   const toggleFavorite = async (item) => {
+    console.log('Saving favorite for user:', userId);
+    console.log('Favorite item:', item);
+
+    if (!userId) {
+      console.log('No userId found');
+      return;
+    }
+
     const alreadyFavorite = favorites.some((fav) => fav.id === item.id);
 
-    if (alreadyFavorite) {
-      setFavorites((prev) => prev.filter((fav) => fav.id !== item.id));
-      await removeFavorite(userId, item.id);
-    } else {
-      setFavorites((prev) => [...prev, item]);
-      await addFavorite(userId, item);
+    try {
+      if (alreadyFavorite) {
+        setFavorites((prev) => prev.filter((fav) => fav.id !== item.id));
+        await removeFavorite(userId, item.id);
+        console.log('Removed from Firestore');
+      } else {
+        setFavorites((prev) => [...prev, item]);
+        await addFavorite(userId, item);
+        console.log('Added to Firestore');
+      }
+    } catch (error) {
+      console.log('Favorite error:', error);
     }
   };
 
@@ -111,8 +132,10 @@ const addOrderToCart = (items) => {
 
 export const useCartStore = () => {
   const context = useContext(CartContext);
+
   if (!context) {
     throw new Error('useCartStore must be used within CartProvider');
   }
+
   return context;
 };

@@ -1,13 +1,9 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { View, Text, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { EmailProvider } from '../context/EmailContext';
-import { CartProvider } from '../context/CartContext';
-import { AuthProvider, useAuth } from '../context/AuthContext';
 import EventsScreen from '../screens/EventsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MenuScreen from '../screens/MenuScreen';
@@ -23,6 +19,8 @@ import RegistrationScreen from '../screens/RegistrationScreen';
 import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 import OrderDetailScreen from '../screens/OrderDetailsScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, ActivityIndicator } from 'react-native';
+import { useAuth } from '../context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -37,32 +35,27 @@ function BottomTabNavigator() {
   };
 
   return (
-  <Tab.Navigator
-  screenOptions={({ route }) => ({
-  tabBarIcon: ({ focused, size, color }) => (
-  <Ionicons
-    name={
-    iconMap[route.name]?.[focused ? 0 : 1] || 'help-outline'
-    }
-    size={size}
-    color={color}
-  />
-  ),
-
-  headerShown: false,
-
-  tabBarStyle: {
-    height: 60,
-    paddingBottom: 20,
-    paddingTop: 5,
-    marginBottom: 0,
-  },
-
-  tabBarItemStyle: {
-    flex: 1,
-    paddingVertical: 4,
-  },
- })}
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, size, color }) => (
+          <Ionicons
+            name={iconMap[route.name]?.[focused ? 0 : 1] || 'help-outline'}
+            size={size}
+            color={color}
+          />
+        ),
+        headerShown: false,
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 20,
+          paddingTop: 5,
+          marginBottom: 0,
+        },
+        tabBarItemStyle: {
+          flex: 1,
+          paddingVertical: 4,
+        },
+      })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Events" component={EventsScreen} />
@@ -73,29 +66,42 @@ function BottomTabNavigator() {
   );
 }
 
-export default function App() {
+export default function AppNavigator() {
+  const { isLoggedIn, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <AuthProvider>
-    <EmailProvider>
-      <CartProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }} >
-        <Stack.Screen name="Login" component={LoginForm} />
-        <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
-        <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
-        <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
-        <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
-        <Stack.Screen name="Specials" component={SpecialsScreen} />
-        <Stack.Screen name="CreateAccount" component={RegistrationScreen} />
-        <Stack.Screen name="OrderHistory" component={OrderHistoryScreen} />
-        <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isLoggedIn ? (
+            <>
+              <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
+              <Stack.Screen name="ItemDetail" component={ItemDetailScreen} />
+              <Stack.Screen name="Cart" component={CartScreen} />
+              <Stack.Screen name="Checkout" component={CheckoutScreen} />
+              <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} />
+              <Stack.Screen name="Specials" component={SpecialsScreen} />
+              <Stack.Screen name="OrderHistory" component={OrderHistoryScreen} />
+              <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={LoginForm} />
+              <Stack.Screen name="CreateAccount" component={RegistrationScreen} />
+            </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
-      </CartProvider>
-    </EmailProvider>
-    </AuthProvider>
     </SafeAreaView>
   );
 }

@@ -21,5 +21,15 @@ export const removeFavorite = async (userId, itemId) => {
 export const getFavorites = async (userId) => {
   const ref = collection(db, "users", userId, "favorites");
   const snapshot = await getDocs(ref);
-  return snapshot.docs.map((doc) => doc.data());
+
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: data.itemId,
+      name: data.name,
+      price: data.price,
+      description: data.description || "",
+      image: data.image || "",
+    };
+  });
 };

@@ -7,7 +7,7 @@ import {  saveOrder, createOrder } from '../../services/OrderService';
 
 export default function CheckoutScreen({ navigation }) {
   const { cartItems } = useCartStore();
-   const { isLoggedIn } = useAuth(); 
+   const { isLoggedIn , user } = useAuth(); 
 
   const total = cartItems.reduce((sum, row) => {
     const price = Number(row?.item?.price) || 0;
@@ -26,7 +26,7 @@ const handleCheckout = async () => {
   }
 
   const order = createOrder(cartItems);
-  await saveOrder("testUser1", order);
+  await saveOrder(user.uid, order);
   navigation.navigate('OrderSuccess', { order });
 };
 

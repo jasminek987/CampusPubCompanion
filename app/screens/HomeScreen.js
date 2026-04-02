@@ -8,6 +8,7 @@ import {
   ImageBackground,
   StyleSheet,
 } from 'react-native';
+import { useAuth } from '../context/AuthContext';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -17,22 +18,18 @@ const HERO_URI =
 
 
 export default function HomeScreen({ navigation }) {
-
+const { userProfile } = useAuth();
   return (
     <View style={styles.container}>
       <ImageBackground source={{ uri: HERO_URI }} style={styles.hero} resizeMode="cover">
         <View style={styles.overlay} />
 
         <View style={[styles.topBar]}>
-          <Text style={styles.userText}>Hey, User</Text>
+          <Text style={styles.userText}>
+            Hey, {userProfile?.firstName || 'User'}
+          </Text>
 
           <View style={styles.rightButtons}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Login')}
-              style={styles.headerButton}
-            >
-              <Text style={styles.headerButtonText}>Login</Text>
-            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => navigation.navigate('Cart')}
