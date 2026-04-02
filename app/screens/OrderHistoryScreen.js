@@ -7,23 +7,30 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { getOrders } from '../../services/OrderService';
+import { useAuth } from '../context/AuthContext';
 
 export default function OrderHistoryScreen({ navigation }) {
-  const [orders, setOrders] = useState([]);
-  const userId = 'testUser1';
+const [orders, setOrders] = useState([]);
+const { user } = useAuth();
+const userId = user?.uid;
 
-  useEffect(() => {
-    const loadOrders = async () => {
-      try {
-        const data = await getOrders(userId);
-        setOrders(data);
-      } catch (error) {
-        console.log('Error loading orders:', error);
-      }
-    };
+useEffect(() => {
+  const loadOrders = async () => {
+    if (!userId) {
+      setOrders([]);
+      return;
+    }
 
-    loadOrders();
-  }, []);
+    try {
+      const data = await getOrders(userId);
+      setOrders(data);
+    } catch (error) {
+      console.log('Error loading orders:', error);
+    }
+  };
+
+  loadOrders();
+}, [userId]);
 
 const renderItem = ({ item }) => (
   <TouchableOpacity
