@@ -5,6 +5,7 @@ import {
   TextInput,
   StyleSheet,
   Alert,
+  Image,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
@@ -21,6 +22,9 @@ import {
   signOut,
 } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
+
+const LOGO_URI =
+  'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/1634057838043-H5MLXFNY8JSXZY8C1E2V/thirsty+moose+pub+logo.jpg?format=1500w';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -76,6 +80,7 @@ export default function LoginScreen() {
       const user = userCredential.user;
       await user.reload();
 
+      // 🔥 EMAIL VERIFICATION LOGIC
       if (!auth.currentUser?.emailVerified) {
         Alert.alert(
           'Email Not Verified',
@@ -93,7 +98,6 @@ export default function LoginScreen() {
                     );
                   }
                 } catch (err) {
-                  console.log('RESEND VERIFICATION ERROR:', err);
                   Alert.alert(
                     'Error',
                     'Could not resend verification email right now.'
@@ -101,10 +105,7 @@ export default function LoginScreen() {
                 }
               },
             },
-            {
-              text: 'OK',
-              style: 'cancel',
-            },
+            { text: 'OK', style: 'cancel' },
           ]
         );
 
@@ -112,6 +113,7 @@ export default function LoginScreen() {
         return;
       }
 
+      // ✅ SUCCESS LOGIN
       setEmail(cleanEmail);
       setEmailInput('');
       setPassword('');
@@ -128,9 +130,6 @@ export default function LoginScreen() {
         },
       ]);
     } catch (error) {
-      console.log('LOGIN ERROR CODE:', error.code);
-      console.log('LOGIN ERROR MESSAGE:', error.message);
-
       let msg = 'Something went wrong';
 
       if (error.code === 'auth/invalid-credential') {
@@ -148,7 +147,8 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={styles.container}>
+      {/* BACK BUTTON */}
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backButton}
@@ -156,19 +156,20 @@ export default function LoginScreen() {
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Login</Text>
+      {/* HEADER WITH LOGO */}
+      <View style={styles.header}>
+        <View style={styles.headerCenter}>
+          <Image source={{ uri: LOGO_URI }} style={styles.logo} />
+          <Text style={styles.title}>Thirsty Moose Pub</Text>
+          <Text style={styles.logintext}>Login</Text>
+        </View>
       </View>
 
       <KeyboardAvoidingView
-        style={styles.keyboardContainer}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
           <Text style={styles.label}>Email</Text>
           <TextInput
             style={styles.input}
@@ -201,42 +202,56 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  keyboardContainer: {
-    flex: 1,
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
+
   scrollContent: {
     paddingHorizontal: 20,
     paddingBottom: 30,
-    flexGrow: 1,
   },
+
   backButton: {
     paddingHorizontal: 20,
-    paddingTop: 8,
+    paddingTop: 12,
     paddingBottom: 6,
   },
+
   backText: {
     fontSize: 16,
     color: '#000',
     fontWeight: '600',
   },
-  titleContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
+
+  header: { paddingTop: 20, paddingBottom: 10 },
+
+  headerCenter: { alignItems: 'center' },
+
+  logo: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
+
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: 'bold',
+    fontStyle: 'italic',
   },
+
+  logintext: {
+    fontSize: 18,
+    color: '#555',
+    textDecorationLine: 'underline',
+  },
+
   label: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 8,
     marginTop: 15,
   },
+
   input: {
     height: 50,
     borderWidth: 1,
@@ -245,6 +260,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: 16,
     backgroundColor: '#f9f9f9',
-    color: '#111',
   },
 });
