@@ -18,7 +18,7 @@ const HERO_URI =
 
 
 export default function HomeScreen({ navigation }) {
-const { userProfile } = useAuth();
+const { userProfile, logout } = useAuth();
   return (
     <View style={styles.container}>
       <ImageBackground source={{ uri: HERO_URI }} style={styles.hero} resizeMode="cover">
@@ -28,14 +28,19 @@ const { userProfile } = useAuth();
           <Text style={styles.userText}>
             Hey, {userProfile?.firstName || 'User'}
           </Text>
-
           <View style={styles.rightButtons}>
+            <TouchableOpacity
+              onPress={logout}
+              style={styles.headerButton}
+            >
+            <Text style={styles.headerButtonText}>Logout</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => navigation.navigate('Cart')}
               style={styles.headerButton}
             >
-              <Text style={styles.headerButtonText}>Cart</Text>
+           <Text style={styles.headerButtonText}>Cart</Text>
             </TouchableOpacity>
           </View>
         </View>
