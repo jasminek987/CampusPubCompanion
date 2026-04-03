@@ -11,7 +11,6 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
 import LoginButton from '../components/LoginButton';
@@ -113,7 +112,6 @@ export default function LoginScreen() {
         return;
       }
 
-      // ✅ SUCCESS LOGIN
       setEmail(cleanEmail);
       setEmailInput('');
       setPassword('');
@@ -147,10 +145,10 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* BACK BUTTON */}
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('CreateAccount')}
         style={styles.backButton}
       >
         <Text style={styles.backText}>← Back</Text>
@@ -197,7 +195,7 @@ export default function LoginScreen() {
           />
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Text,
+  View,
   TextInput,
   StyleSheet,
   Alert,
@@ -9,7 +10,6 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useEmailStore } from '../context/EmailContext';
 import CreateAccountButton from '../components/CreateAccountButton';
@@ -143,8 +143,8 @@ export default function RegistrationScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
@@ -224,7 +224,7 @@ export default function RegistrationScreen() {
           <CreateAccountButton onPress={handleSubmit} disabled={loading} />
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
 
