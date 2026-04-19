@@ -85,16 +85,12 @@ export function CartProvider({ children }) {
   const isFavorited = (id) => favorites.some((fav) => fav.id === id);
 
   const toggleFavorite = async (item) => {
-    console.log('Saving favorite for user:', userId);
-    console.log('Favorite item:', item);
-
     if (!userId) {
       console.log('No userId found');
       return;
     }
 
-    const alreadyFavorite = favorites.some((fav) => fav.id === item.id);
-
+  const alreadyFavorite = favorites.some((fav) => fav.id === item.id);
     try {
       if (alreadyFavorite) {
         setFavorites((prev) => prev.filter((fav) => fav.id !== item.id));
