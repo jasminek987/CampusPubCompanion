@@ -8,17 +8,14 @@ import {
 import { doc, setDoc } from 'firebase/firestore';
 import { getMenu } from '../services/DataService';
 import { createOrder, saveOrder } from '../services/OrderService';
-
 import LoginButton from '../app/components/LoginButton';
 import MenuScreen from '../app/screens/MenuScreen';
 
-// Firebase config
 jest.mock('../firebase/firebaseConfig', () => ({
   auth: { currentUser: { emailVerified: true } },
   db: {},
 }));
 
-// Firebase auth
 jest.mock('firebase/auth', () => ({
   signInWithEmailAndPassword: jest.fn(),
   createUserWithEmailAndPassword: jest.fn(),
@@ -30,7 +27,6 @@ jest.mock('firebase/auth', () => ({
   onAuthStateChanged: jest.fn(() => jest.fn()),
 }));
 
-// Firestore
 jest.mock('firebase/firestore', () => ({
   doc: jest.fn(),
   setDoc: jest.fn(),
@@ -47,29 +43,24 @@ jest.mock('firebase/firestore', () => ({
   where: jest.fn(),
 }));
 
-// Data service
 jest.mock('../services/DataService', () => ({
   getMenu: jest.fn(),
 }));
 
-// Order service
 jest.mock('../services/OrderService', () => ({
   saveOrder: jest.fn(() => Promise.resolve()),
   createOrder: jest.fn(() => ({ id: 'order-1', total: 12.49, items: [] })),
   getOrders: jest.fn(() => Promise.resolve([])),
 }));
 
-// Alert
 jest.mock('react-native/Libraries/Alert/Alert', () => ({
   alert: jest.fn(),
 }));
 
-// AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
 
-// Email context
 jest.mock('../app/context/EmailContext', () => ({
   useEmailStore: () => ({
     email: 'test@test.com',
@@ -81,15 +72,13 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ─── RUQAIYA ──────────────────────────────────────────────────────────────────
-describe('RUQAIYA - Authentication', () => {
+describe('Authentication', () => {
   it('TEST 1: LoginButton calls the provided handler when pressed', () => {
     const onPressMock = jest.fn();
 
     const { getByText } = render(
       <LoginButton onPress={onPressMock} title="Login" />
     );
-
     fireEvent.press(getByText(/login/i));
     expect(onPressMock).toHaveBeenCalledTimes(1);
   });
@@ -111,7 +100,6 @@ describe('RUQAIYA - Authentication', () => {
     const fakeDb = {};
     const cleanEmail = 'newuser@test.com';
     const cleanPassword = 'securepass1';
-
     const userCredential = await createUserWithEmailAndPassword(
       fakeAuth,
       cleanEmail,
@@ -143,8 +131,7 @@ describe('RUQAIYA - Authentication', () => {
   });
 });
 
-// ─── NIHARIKA ─────────────────────────────────────────────────────────────────
-describe('NIHARIKA - Menu', () => {
+describe('Menu', () => {
   it('TEST 3: MenuScreen calls DataService.getMenu on load', async () => {
     getMenu.mockResolvedValueOnce([
       {
@@ -214,8 +201,7 @@ describe('NIHARIKA - Menu', () => {
   });
 });
 
-// ─── JASMINE ──────────────────────────────────────────────────────────────────
-describe('JASMINE - Cart & Checkout', () => {
+describe('Cart & Checkout', () => {
   it('TEST 5: createOrder builds an order object from cart items', () => {
     const cartItems = [
       {
