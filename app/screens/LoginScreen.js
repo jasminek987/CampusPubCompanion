@@ -79,7 +79,6 @@ export default function LoginScreen() {
       const user = userCredential.user;
       await user.reload();
 
-      // 🔥 EMAIL VERIFICATION LOGIC
       if (!auth.currentUser?.emailVerified) {
         Alert.alert(
           'Email Not Verified',
@@ -146,7 +145,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      {/* BACK BUTTON */}
+      
       <TouchableOpacity
         onPress={() => navigation.navigate('CreateAccount')}
         style={styles.backButton}
@@ -154,7 +153,6 @@ export default function LoginScreen() {
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
-      {/* HEADER WITH LOGO */}
       <View style={styles.header}>
         <View style={styles.headerCenter}>
           <Image source={{ uri: LOGO_URI }} style={styles.logo} />
