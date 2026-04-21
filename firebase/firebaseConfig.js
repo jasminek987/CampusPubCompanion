@@ -22,4 +22,4 @@ export const auth =
         persistence: getReactNativePersistence(AsyncStorage),
       });
 
-export const db = getFirestore(app);
+export const db = getFirestore(app); 
