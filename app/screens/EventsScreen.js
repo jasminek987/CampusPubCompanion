@@ -9,9 +9,61 @@ export default function EventsScreen({ navigation }) {
   const [openId, setOpenId] = useState(null);
 
   const getEventDateTime = (date, time) => {
-    const dateTimeString = `${date} ${time}`;
-    const parsedDate = new Date(dateTimeString);
-    return isNaN(parsedDate.getTime()) ? null : parsedDate;
+    if (!date) return null;
+
+    const now = new Date();
+
+    const monthMap = {
+      january: 0, jan: 0,
+      february: 1, feb: 1,
+      march: 2, mar: 2,
+      april: 3, apr: 3,
+      may: 4,
+      june: 5, jun: 5,
+      july: 6, jul: 6,
+      august: 7, aug: 7,
+      september: 8, sep: 8, sept: 8,
+      october: 9, oct: 9,
+      november: 10, nov: 10,
+      december: 11, dec: 11,
+    };
+
+    const cleanDate = String(date).trim().replace(',', '');
+    const parts = cleanDate.split(/\s+/);
+
+    let month;
+    let day;
+    let year;
+
+    if (parts.length >= 2) {
+      month = monthMap[parts[0].toLowerCase()];
+      day = parseInt(parts[1], 10);
+      year = parts[2] ? parseInt(parts[2], 10) : now.getFullYear();
+    }
+
+    if (month === undefined || isNaN(day)) {
+      const fallback = new Date(`${date} ${time || ''}`);
+      return isNaN(fallback.getTime()) ? null : fallback;
+    }
+
+    let hours = 0;
+    let minutes = 0;
+
+    if (time) {
+      const cleanTime = String(time).trim().toLowerCase();
+      const match = cleanTime.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);
+
+      if (match) {
+        hours = parseInt(match[1], 10);
+        minutes = match[2] ? parseInt(match[2], 10) : 0;
+        const meridian = match[3];
+
+        if (meridian === 'pm' && hours !== 12) hours += 12;
+        if (meridian === 'am' && hours === 12) hours = 0;
+      }
+    }
+
+    return new Date(year, month, day, hours, minutes, 0, 0);
   };
 
   useEffect(() => {
@@ -93,7 +145,9 @@ export default function EventsScreen({ navigation }) {
                   </Text>
 
                   <View style={[styles.pill, isPast ? styles.pastPill : styles.upcomingPill]}>
-                    <Text style={styles.pillText}>{isOpen ? 'Hide' : 'Details'}</Text>
+                    <Text style={[styles.pillText, !isPast && styles.upcomingPillText]}>
+                      {isOpen ? 'Hide' : 'Details'}
+                    </Text>
                   </View>
                 </View>
 
@@ -153,18 +207,18 @@ const styles = StyleSheet.create({
   },
 
   upcomingCard: {
-    backgroundColor: '#fffbea',
-    borderColor: '#f0d98a',
+    backgroundColor: '#ffffff',
+    borderColor: '#cfcfcf',
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2
+    shadowOpacity: 0.06,
+    shadowRadius: 3,
+    elevation: 1
   },
 
   pastCard: {
     backgroundColor: '#f5f5f7',
     borderColor: '#e6e6e9',
-    opacity: 0.85
+    opacity: 0.75
   },
 
   cardInner: { padding: 14 },
@@ -191,18 +245,22 @@ const styles = StyleSheet.create({
   },
 
   upcomingPill: {
-    backgroundColor: '#fff',
-    borderColor: '#e0c76c'
+    backgroundColor: '#f8f8f8',
+    borderColor: '#bdbdbd'
   },
 
   pastPill: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderColor: '#ddd'
   },
 
   pillText: {
     color: '#111',
     fontWeight: '800'
+  },
+
+  upcomingPillText: {
+    color: '#000'
   },
 
   meta: {
