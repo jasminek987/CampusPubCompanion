@@ -15,10 +15,8 @@ import { getSpecials } from '../../services/DataService';
 const LOGO_URI =
   'https://images.squarespace-cdn.com/content/v1/61154824a557d54827fa7e49/1634057838043-H5MLXFNY8JSXZY8C1E2V/thirsty+moose+pub+logo.jpg?format=1500w';
 
-// Days the pub is OPEN (matches Info screen hours)
 const OPEN_DAYS = ['Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-// Sort order for open days (Tue → Fri)
 const DAY_ORDER = {
   Tuesday: 1,
   Wednesday: 2,
@@ -35,8 +33,6 @@ export default function SpecialsScreen() {
     async function fetchData() {
       try {
         const data = await getSpecials();
-
-        // Filter out specials for closed days, then sort Tue → Fri
         const filtered = (data || [])
           .filter((s) => OPEN_DAYS.includes(s.day))
           .sort(
@@ -54,7 +50,6 @@ export default function SpecialsScreen() {
     fetchData();
   }, []);
 
-  // Convert a special into the shape ItemDetailScreen expects
   const handleOpenDetail = (special) => {
     const itemForDetail = {
       id: special.id,
@@ -175,7 +170,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 
-  // Top bar (matches ItemDetailScreen)
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -194,8 +188,6 @@ const styles = StyleSheet.create({
     color: '#111',
     fontWeight: '900',
   },
-
-  // Header
   header: {
     alignItems: 'center',
     paddingTop: 4,
@@ -227,13 +219,9 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#E5E5EA',
   },
-
-  // List
   listContent: {
     paddingBottom: 30,
   },
-
-  // Card (matches ItemDetail card style)
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
@@ -286,16 +274,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textDecorationLine: 'line-through',
   },
-
-  // Description
   desc: {
     marginTop: 12,
     fontSize: 14,
     lineHeight: 20,
     color: '#333',
   },
-
-  // Footer
   cardFooter: {
     marginTop: 12,
     flexDirection: 'row',
@@ -325,15 +309,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginRight: 2,
   },
-
-  // Loading
   loadingWrap: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  // Empty state
   emptyCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
